@@ -1,14 +1,18 @@
-<!---
-Before adding a new provider, there's a few general guidelines as to what providers would be accepted into the repo, primarily around trustworthiness and legitimacy:
+## Panduan menambah provider (FLA)
 
-1. Is the provider a legitimate company?
-2. Does the provider provide a proper API service?
-   For example, reverse engineering services such as Claude Code, Codex, GitHub Copilot, Qwen Code, etc are not considered appropriate for this list.
-3. Does the provider have a business model?
-4. Does the provider provide legitimate services?
-   For example, providing commercial models such as Anthropic or OpenAI models for free or at steep discounts can suggest questionable business practices, such as chatbot reverse engineering, API credit resale/theft, or other similar practices.
+Sebelum menambah provider baru, cek dulu:
 
-These guidelines are not exhaustive, but attempts to put into writing what sort of providers might be included in the list.
+1. **Perusahaan / layanan resmi?** Bukan akun personal random.
+2. **API sah?** Bukan reverse-engineer chatbot (Claude web, Copilot, dll.).
+3. **Ada model bisnis yang masuk akal?** (free tier / trial / freemium)
+4. **Bukan “model komersial gratis mencurigakan”** (indikasi curi kredit API / reverse eng).
 
-For providers that are trying to add themselves to the list, please note that you are very likely going to see abusive traffic, as free APIs are very common abuse targets.
---->
+### Cara kontribusi teknis
+
+- Jangan edit `README.md` langsung.
+- Ubah `src/README_template.md` (teks/struktur) dan/atau `src/pull_available_models.py` (fetch + konten provider).
+- Generate ulang: `python -u src/pull_available_models.py`
+
+### Catatan
+
+Free API rawan abuse. Provider yang masuk list ini kemungkinan kena traffic kasar — siapkan rate limit & ToS yang jelas.

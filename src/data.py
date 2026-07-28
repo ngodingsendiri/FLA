@@ -275,6 +275,19 @@ MODEL_TO_NAME_MAPPING = {
     "poolside/laguna-s-2.1:free": "Poolside Laguna S 2.1",
     "poolside/laguna-xs-2.1:free": "Poolside Laguna XS 2.1",
     "stepfun/step-3.7-flash:free": "StepFun Step 3.7 Flash",
+    # FLA — mapping tambahan (OpenRouter / SambaNova)
+    "google/gemma-4-31b-it:free": "Gemma 4 31B Instruct",
+    "google/gemma-4-26b-a4b-it:free": "Gemma 4 26B A4B Instruct",
+    "openai/gpt-oss-20b:free": "OpenAI GPT-OSS 20B",
+    "nvidia/nemotron-nano-12b-v2-vl:free": "NVIDIA Nemotron Nano 12B v2 VL",
+    "nvidia/nemotron-3-nano-30b-a3b:free": "NVIDIA Nemotron 3 Nano 30B A3B",
+    "nvidia/nemotron-nano-9b-v2:free": "NVIDIA Nemotron Nano 9B v2",
+    "deepseek-v3.1": "DeepSeek V3.1",
+    "deepseek-v3.2": "DeepSeek V3.2",
+    "gemma-4-31b-it": "Gemma 4 31B Instruct",
+    "gpt-oss-120b": "OpenAI GPT-OSS 120B",
+    "meta-llama-3.3-70b-instruct": "Llama 3.3 70B Instruct",
+    "minimax-m2.7": "MiniMax M2.7",
 }
 
 HYPERBOLIC_IGNORED_MODELS = {

@@ -35,6 +35,107 @@ def create_logger(provider_name):
 
 MISSING_MODELS = set()
 
+# Label limit ke bahasa Indonesia (lebih gampang dibaca)
+LIMIT_LABELS_ID = {
+    "requests/minute": "req/menit",
+    "requests/day": "req/hari",
+    "requests/month": "req/bulan",
+    "requests/hour": "req/jam",
+    "tokens/minute": "token/menit",
+    "tokens/day": "token/hari",
+    "tokens/hour": "token/jam",
+    "audio-seconds/minute": "detik-audio/menit",
+}
+
+# Cadangan limit Gemini kalau GCP Quotas tidak tersedia (dari cek publik terakhir)
+FALLBACK_GEMINI_LIMITS = {
+    "gemini-3.6-flash": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 5,
+    },
+    "gemini-3.5-flash": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 5,
+    },
+    "gemini-3-flash": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 5,
+    },
+    "gemini-3.5-flash-lite": {
+        "tokens/minute": 250000,
+        "requests/day": 500,
+        "requests/minute": 15,
+    },
+    "gemini-3.1-flash-lite": {
+        "tokens/minute": 250000,
+        "requests/day": 500,
+        "requests/minute": 15,
+    },
+    "gemini-2.5-flash": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 5,
+    },
+    "gemini-2.5-flash-lite": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 10,
+    },
+    "gemini-3.1-flash-tts": {
+        "tokens/minute": 10000,
+        "requests/day": 10,
+        "requests/minute": 3,
+    },
+    "gemini-2.5-flash-tts": {
+        "tokens/minute": 10000,
+        "requests/day": 10,
+        "requests/minute": 3,
+    },
+    "gemini-robotics-er-1.6-preview": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 5,
+    },
+    "gemini-robotics-er-1.5-preview": {
+        "tokens/minute": 250000,
+        "requests/day": 20,
+        "requests/minute": 10,
+    },
+    "gemma-4-31b": {
+        "tokens/minute": 16000,
+        "requests/day": 14400,
+        "requests/minute": 30,
+    },
+    "gemma-4-26b": {
+        "tokens/minute": 16000,
+        "requests/day": 14400,
+        "requests/minute": 30,
+    },
+    "gemma-3-27b": {
+        "tokens/minute": 15000,
+        "requests/day": 14400,
+        "requests/minute": 30,
+    },
+    "gemma-3-12b": {
+        "tokens/minute": 15000,
+        "requests/day": 14400,
+        "requests/minute": 30,
+    },
+    "gemma-3-4b": {
+        "tokens/minute": 15000,
+        "requests/day": 14400,
+        "requests/minute": 30,
+    },
+    "gemma-3-1b": {
+        "tokens/minute": 15000,
+        "requests/day": 14400,
+        "requests/minute": 30,
+    },
+}
+
 
 def get_model_name(id):
     id = id.lower()
@@ -42,6 +143,27 @@ def get_model_name(id):
         return MODEL_TO_NAME_MAPPING[id]
     MISSING_MODELS.add(id)
     return id
+
+
+def env_ready(*keys):
+    """True jika semua env key terisi."""
+    return all(os.environ.get(k) for k in keys)
+
+
+def safe_fetch(name, fn, logger, default=None, needed_env=None):
+    """Jalankan fetch; kalau gagal / key kosong, return default (jangan crash total)."""
+    if default is None:
+        default = []
+    if needed_env and not env_ready(*needed_env):
+        logger.warning(
+            f"Lewati {name}: env belum lengkap ({', '.join(needed_env)})"
+        )
+        return default
+    try:
+        return fn(logger)
+    except Exception as e:
+        logger.error(f"Gagal fetch {name}: {e}")
+        return default
 
 
 def get_groq_limits_for_stt_model(model_id, logger):
@@ -345,7 +467,7 @@ def fetch_gemini_limits(logger):
     logger.info("Fetching Gemini limits...")
     client = cloudquotas_v1.CloudQuotasClient()
     request = cloudquotas_v1.ListQuotaInfosRequest(
-        parent=f"projects/{os.environ["GCP_PROJECT_ID"]}/locations/global/services/generativelanguage.googleapis.com"
+        parent=f"projects/{os.environ['GCP_PROJECT_ID']}/locations/global/services/generativelanguage.googleapis.com"
     )
     pager = client.list_quota_infos(request=request)
     models = defaultdict(dict)
@@ -538,7 +660,24 @@ def get_human_limits(model, seperator="<br>"):
     limits = model["limits"]
     # filter None values
     limits = {key: value for key, value in limits.items() if value is not None}
-    return seperator.join([f"{value:,} {key}" for key, value in limits.items()])
+    parts = []
+    for key, value in limits.items():
+        label = LIMIT_LABELS_ID.get(key, key)
+        if isinstance(value, (int, float)):
+            parts.append(f"{value:,} {label}".replace(",", "."))
+        else:
+            parts.append(f"{value} {label}")
+    return seperator.join(parts)
+
+
+def provider_meta(jenis="gratis", batas=None, catatan=None):
+    """Blok meta singkat di bawah judul provider (tampil konsisten)."""
+    lines = [f"> **Jenis:** {jenis}"]
+    if batas:
+        lines.append(f"> **Batas:** {batas}")
+    if catatan:
+        lines.append(f"> **Catatan:** {catatan}")
+    return "\n".join(lines) + "\n\n"
 
 
 def fetch_kilo_models(logger):
@@ -598,66 +737,110 @@ def main():
     cohere_logger = create_logger("Cohere")
     kilo_logger = create_logger("Kilo")
 
-    fetch_concurrently = os.getenv("FETCH_CONCURRENTLY", "false").lower() == "true"
+    def run_all_fetches():
+        g = safe_fetch(
+            "Google AI Studio",
+            fetch_gemini_limits,
+            google_ai_studio_logger,
+            default={},
+            needed_env=("GCP_PROJECT_ID",),
+        )
+        if not g:
+            google_ai_studio_logger.warning(
+                "Pakai FALLBACK_GEMINI_LIMITS (GCP tidak tersedia)"
+            )
+            g = dict(FALLBACK_GEMINI_LIMITS)
+        return {
+            "gemini": g,
+            "openrouter": safe_fetch(
+                "OpenRouter", fetch_openrouter_models, openrouter_logger, default=[]
+            ),
+            "hyperbolic": safe_fetch(
+                "Hyperbolic",
+                fetch_hyperbolic_models,
+                hyperbolic_logger,
+                default=[],
+                needed_env=("HYPERBOLIC_API_KEY",),
+            ),
+            "cloudflare": safe_fetch(
+                "Cloudflare",
+                fetch_cloudflare_models,
+                cloudflare_logger,
+                default=[],
+                needed_env=("CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_KEY"),
+            ),
+            "samba": safe_fetch(
+                "SambaNova", fetch_samba_models, samba_logger, default=[]
+            ),
+            "scaleway": safe_fetch(
+                "Scaleway",
+                fetch_scaleway_models,
+                scaleway_logger,
+                default=[],
+                needed_env=("SCALEWAY_API_KEY",),
+            ),
+            "cohere": safe_fetch(
+                "Cohere",
+                fetch_cohere_models,
+                cohere_logger,
+                default=[],
+                needed_env=("COHERE_API_KEY",),
+            ),
+            "kilo": safe_fetch("Kilo", fetch_kilo_models, kilo_logger, default=[]),
+            "groq": safe_fetch(
+                "Groq",
+                fetch_groq_models,
+                groq_logger,
+                default=[],
+                needed_env=("GROQ_API_KEY",),
+            ),
+        }
 
-    if fetch_concurrently:
-        with ThreadPoolExecutor() as executor:
-            futures = [
-                executor.submit(fetch_gemini_limits, google_ai_studio_logger),
-                executor.submit(fetch_openrouter_models, openrouter_logger),
-                executor.submit(fetch_hyperbolic_models, hyperbolic_logger),
-                executor.submit(fetch_cloudflare_models, cloudflare_logger),
-                executor.submit(fetch_samba_models, samba_logger),
-                executor.submit(fetch_scaleway_models, scaleway_logger),
-                executor.submit(fetch_cohere_models, cohere_logger),
-                executor.submit(fetch_kilo_models, kilo_logger),
-            ]
-            (
-                gemini_models,
-                openrouter_models,
-                hyperbolic_models,
-                cloudflare_models,
-                samba_models,
-                scaleway_models,
-                cohere_models,
-                kilo_models,
-            ) = [f.result() for f in futures]
+    results = run_all_fetches()
+    gemini_models = results["gemini"]
+    openrouter_models = results["openrouter"]
+    hyperbolic_models = results["hyperbolic"]
+    cloudflare_models = results["cloudflare"]
+    samba_models = results["samba"]
+    scaleway_models = results["scaleway"]
+    cohere_models = results["cohere"]
+    kilo_models = results["kilo"]
+    groq_models = results["groq"]
 
-            # Fetch groq models after others complete
-            groq_models = fetch_groq_models(groq_logger)
-    else:
-        gemini_models = fetch_gemini_limits(google_ai_studio_logger)
-        openrouter_models = fetch_openrouter_models(openrouter_logger)
-        hyperbolic_models = fetch_hyperbolic_models(hyperbolic_logger)
-        cloudflare_models = fetch_cloudflare_models(cloudflare_logger)
-        samba_models = fetch_samba_models(samba_logger)
-        scaleway_models = fetch_scaleway_models(scaleway_logger)
-        cohere_models = fetch_cohere_models(cohere_logger)
-        kilo_models = fetch_kilo_models(kilo_logger)
-        groq_models = fetch_groq_models(groq_logger)
-
-    # Initialize markdown string for free providers
     model_list_markdown = ""
 
     # --- OpenRouter ---
     model_list_markdown += "### [OpenRouter](https://openrouter.ai)\n\n"
     if openrouter_models:
         provider_limits = get_human_limits(openrouter_models[0])
-        model_list_markdown += "**Limits:**\n\n"
-        model_list_markdown += f"[{provider_limits}<br>Up to 1000 requests/day with $10 lifetime topup](https://openrouter.ai/docs/api/reference/limits)\n\n"
-        model_list_markdown += "Models share a common quota.\n\n"
+        model_list_markdown += provider_meta(
+            "🟢 Gratis",
+            f"[{provider_limits}<br>sampai ~1.000 req/hari jika pernah top-up $10](https://openrouter.ai/docs/api/reference/limits)",
+            "Semua model free berbagi kuota yang sama.",
+        )
+        model_list_markdown += "**Model gratis:**\n\n"
         for model in openrouter_models:
             model_list_markdown += (
                 f"- [{model['name']}](https://openrouter.ai/{model['id']})\n"
             )
+    else:
+        model_list_markdown += provider_meta(
+            "🟢 Gratis",
+            "Lihat docs OpenRouter",
+            "Daftar model gagal di-fetch saat generate terakhir.",
+        )
     model_list_markdown += "\n"
 
     # --- Google AI Studio ---
     model_list_markdown += "### [Google AI Studio](https://aistudio.google.com)\n\n"
-    model_list_markdown += (
-        "Data is used for training when used outside of the UK/CH/EEA/EU.\n\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "Beda per model (tabel di bawah)",
+        "⚠️ Di luar UK/CH/EEA/EU, data bisa dipakai untuk training.",
     )
-    model_list_markdown += "<table><thead><tr><th>Model Name</th><th>Model Limits</th></tr></thead><tbody>\n"
+    model_list_markdown += (
+        "<table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>\n"
+    )
 
     gemini_text_models = [
         {
@@ -747,9 +930,8 @@ def main():
         },
     ]
 
-    # Write text models to table
     for model in gemini_text_models:
-        limits_str = get_human_limits(model)
+        limits_str = get_human_limits(model) or "—"
         model_list_markdown += (
             f"<tr><td>{model['name']}</td><td>{limits_str}</td></tr>\n"
         )
@@ -760,200 +942,206 @@ def main():
     model_list_markdown += (
         "### [NVIDIA NIM](https://build.nvidia.com/explore/discover)\n\n"
     )
-    model_list_markdown += "Phone number verification required.\n"
-    model_list_markdown += "Models tend to be context window limited.\n\n"
-    model_list_markdown += "**Limits:** 40 requests/minute\n\n"
-    model_list_markdown += "- [Various open models](https://build.nvidia.com/models)\n"
-    model_list_markdown += "\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "40 req/menit",
+        "📱 Wajib verifikasi HP. Context window model sering terbatas.",
+    )
+    model_list_markdown += "- [Berbagai model open](https://build.nvidia.com/models)\n\n"
 
-    # --- Mistral (La Plateforme) ---
+    # --- Mistral ---
     model_list_markdown += (
         "### [Mistral (La Plateforme)](https://console.mistral.ai/)\n\n"
     )
-    model_list_markdown += (
-        "* Free tier (Experiment plan) requires opting into data training\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis (plan Experiment)",
+        "Per model dan organisasi — cek [halaman limits](https://admin.mistral.ai/plateforme/limits)",
+        "📱 Verifikasi HP. Free tier biasanya butuh setuju data training. Perkiraan akun baru (Juli 2026): 25rb–20jt token/menit dan 0,03–12,5 req/detik tergantung model.",
     )
-    model_list_markdown += "* Requires phone number verification.\n\n"
-    model_list_markdown += "**Limits:** Set per-model and per-organization — check [your limits page](https://admin.mistral.ai/plateforme/limits). As of July 2026 a new free account sees anywhere from 25,000 to 20,000,000 tokens/minute and 0.03 to 12.5 requests/second depending on the model.\n\n"
-    model_list_markdown += "- [Open and Proprietary Mistral models](https://docs.mistral.ai/getting-started/models/models_overview/)\n"
-    model_list_markdown += "\n"
+    model_list_markdown += "- [Model open dan proprietary Mistral](https://docs.mistral.ai/getting-started/models/models_overview/)\n\n"
 
-    # --- Mistral (Codestral) ---
     model_list_markdown += (
         "### [Mistral (Codestral)](https://codestral.mistral.ai/)\n\n"
     )
-    model_list_markdown += "* Currently free to use\n"
-    model_list_markdown += "* Monthly subscription based\n"
-    model_list_markdown += "* Requires phone number verification\n\n"
-    model_list_markdown += "**Limits:** 30 requests/minute, 2,000 requests/day\n\n"
-    model_list_markdown += "- Codestral\n"
-    model_list_markdown += "\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "30 req/menit, 2.000 req/hari",
+        "📱 Verifikasi HP. Langganan bulanan (tier free).",
+    )
+    model_list_markdown += "- Codestral\n\n"
 
-    # --- HuggingFace Serverless Inference ---
+    # --- HF ---
     model_list_markdown += "### [HuggingFace Inference Providers](https://huggingface.co/docs/inference-providers/en/index)\n\n"
-    model_list_markdown += "HuggingFace Serverless Inference limited to models smaller than 10GB. Some popular models are supported even if they exceed 10GB.\n\n"
-    model_list_markdown += "**Limits:** [$0.10/month in credits](https://huggingface.co/docs/inference-providers/en/pricing)\n\n"
-    model_list_markdown += "- Various open models across supported providers\n"
-    model_list_markdown += "\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis (kredit kecil)",
+        "[~$0,10/bulan](https://huggingface.co/docs/inference-providers/en/pricing)",
+        "Serverless biasanya untuk model di bawah 10GB; beberapa model populer tetap didukung meski lebih besar.",
+    )
+    model_list_markdown += "- Berbagai model open di provider yang didukung\n\n"
 
-    # --- Vercel AI Gateway ---
+    # --- Vercel ---
     model_list_markdown += "### [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)\n\n"
-    model_list_markdown += "Routes to various supported providers.\n\n"
-    model_list_markdown += "The free tier covers a subset of the model catalogue, with per-model rate limits.\n\n"
-    model_list_markdown += "**Limits:** [$5/month](https://vercel.com/docs/ai-gateway/pricing)\n\n"
-    model_list_markdown += "\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis (kredit)",
+        "[~$5/bulan](https://vercel.com/docs/ai-gateway/pricing)",
+        "Meroute ke banyak provider. Free tier hanya subset katalog, limit per model.",
+    )
 
-    # --- Kilo Gateway ---
+    # --- Kilo ---
     model_list_markdown += "### [Kilo Gateway](https://kilo.ai/docs/gateway)\n\n"
-    model_list_markdown += "OpenAI-compatible gateway routing to various providers. Free models work without an account.\n\n"
-    model_list_markdown += "All free models may use your prompts for training.\n\n"
-    model_list_markdown += "**Limits:** [200 requests/hour per IP, shared across all free models](https://kilo.ai/docs/gateway/usage-and-billing#rate-limiting)\n\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "[200 req/jam per IP, semua model free berbagi](https://kilo.ai/docs/gateway/usage-and-billing#rate-limiting)",
+        "⚠️ Gateway OpenAI-compatible. Model free bisa memakai prompt untuk training. Bisa tanpa akun.",
+    )
     if kilo_models:
+        model_list_markdown += "**Model gratis:**\n\n"
         for model in kilo_models:
             model_list_markdown += f"- {model['name']}\n"
+    else:
+        model_list_markdown += "_Daftar model tidak tersedia saat generate terakhir._\n"
     model_list_markdown += "\n"
 
     # --- OpenCode Zen ---
     model_list_markdown += "### [OpenCode Zen](https://opencode.ai/docs/zen/)\n\n"
-    model_list_markdown += "AI gateway with curated models.\n\n"
-    model_list_markdown += "Free models may use data for improvement.\n\n"
-    model_list_markdown += "- Big Pickle\n"
-    model_list_markdown += "- DeepSeek V4 Flash Free\n"
-    model_list_markdown += "- MiMo-V2.5 Free\n"
-    model_list_markdown += "- Laguna S 2.1 Free\n"
-    model_list_markdown += "- Ling-3.0-flash Free\n"
-    model_list_markdown += "- North Mini Code Free\n"
-    model_list_markdown += "- Nemotron 3 Ultra Free\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis (sebagian model)",
+        "Lihat situs OpenCode Zen",
+        "⚠️ Gateway dengan model kurasi. Data model free bisa dipakai improvement.",
+    )
+    model_list_markdown += "**Model free (daftar statis):**\n\n"
+    for name in (
+        "Big Pickle",
+        "DeepSeek V4 Flash Free",
+        "MiMo-V2.5 Free",
+        "Laguna S 2.1 Free",
+        "Ling-3.0-flash Free",
+        "North Mini Code Free",
+        "Nemotron 3 Ultra Free",
+    ):
+        model_list_markdown += f"- {name}\n"
     model_list_markdown += "\n"
 
     # --- Cerebras ---
     model_list_markdown += "### [Cerebras](https://cloud.cerebras.ai/)\n\n"
-    model_list_markdown += "<table><thead><tr><th>Model Name</th><th>Model Limits</th></tr></thead><tbody>\n"
-    cerebras_free_limits = "5 requests/minute<br>30,000 tokens/minute<br>1,000,000 tokens/hour<br>1,000,000 tokens/day"
-    cerebras_models = [
-        {"name": "gpt-oss-120b", "limits_text": cerebras_free_limits},
-        {"name": "zai-glm-4.7", "limits_text": cerebras_free_limits},
-        {"name": "gemma-4-31b", "limits_text": cerebras_free_limits},
-    ]
-    for model in cerebras_models:
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "5 req/menit · 30.000 token/menit · 1.000.000 token/jam · 1.000.000 token/hari",
+        "Limit ketat; cocok untuk uji coba.",
+    )
+    model_list_markdown += (
+        "<table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>\n"
+    )
+    cerebras_free_limits = (
+        "5 req/menit<br>30.000 token/menit<br>1.000.000 token/jam<br>1.000.000 token/hari"
+    )
+    for name in ("gpt-oss-120b", "zai-glm-4.7", "gemma-4-31b"):
         model_list_markdown += (
-            f"<tr><td>{model['name']}</td><td>{model['limits_text']}</td></tr>\n"
+            f"<tr><td>{name}</td><td>{cerebras_free_limits}</td></tr>\n"
         )
     model_list_markdown += "</tbody></table>\n\n"
 
     # --- Groq ---
     model_list_markdown += "### [Groq](https://console.groq.com)\n\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "Beda per model (tabel)",
+        "Inference cepat. Limit diukur dari header rate-limit API jika key tersedia saat generate.",
+    )
     if groq_models:
-        model_list_markdown += "<table><thead><tr><th>Model Name</th><th>Model Limits</th></tr></thead><tbody>\n"
+        model_list_markdown += (
+            "<table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>\n"
+        )
         for model in groq_models:
-            limits_str = get_human_limits(model)
+            limits_str = get_human_limits(model) or "—"
             model_list_markdown += (
                 f"<tr><td>{model['name']}</td><td>{limits_str}</td></tr>\n"
             )
         model_list_markdown += "</tbody></table>\n"
+    else:
+        model_list_markdown += (
+            "_Daftar model Groq tidak di-fetch (butuh `GROQ_API_KEY`)._\n"
+        )
     model_list_markdown += "\n"
 
     # --- Cohere ---
     model_list_markdown += "### [Cohere](https://cohere.com)\n\n"
-    model_list_markdown += "**Limits:**\n\n"
-    model_list_markdown += "[20 requests/minute<br>1,000 requests/month](https://docs.cohere.com/docs/rate-limits)\n\n"
-    model_list_markdown += "Models share a common monthly quota.\n\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "[20 req/menit · 1.000 req/bulan](https://docs.cohere.com/docs/rate-limits)",
+        "Semua model chat berbagi kuota bulanan.",
+    )
     if cohere_models:
+        model_list_markdown += "**Model chat:**\n\n"
         for model in cohere_models:
             model_list_markdown += f"- {model['name']}\n"
     else:
-        model_list_markdown += "- No chat models available right now.\n"
+        model_list_markdown += (
+            "_Daftar model tidak di-fetch (butuh `COHERE_API_KEY`)._\n"
+        )
     model_list_markdown += "\n"
 
-    # --- Cloudflare Workers AI ---
+    # --- Cloudflare ---
     model_list_markdown += (
         "### [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai)\n\n"
     )
-    model_list_markdown += "**Limits:** [10,000 neurons/day](https://developers.cloudflare.com/workers-ai/platform/pricing/#free-allocation)\n\n"
+    model_list_markdown += provider_meta(
+        "🟢 Gratis",
+        "[10.000 neuron/hari](https://developers.cloudflare.com/workers-ai/platform/pricing/#free-allocation)",
+        "Fokus text generation di daftar otomatis.",
+    )
     if cloudflare_models:
+        model_list_markdown += "**Model:**\n\n"
         for model in cloudflare_models:
             model_list_markdown += f"- {model['name']}\n"
+    else:
+        model_list_markdown += (
+            "_Daftar model tidak di-fetch (butuh kredensial Cloudflare)._\n"
+        )
     model_list_markdown += "\n"
 
-    # --- Google Cloud Vertex AI ---
-    vertex_llama_models = []
-    vertex_gemini_models = []
-    vertex_deepseek_models = []
-    if vertex_llama_models or vertex_gemini_models or vertex_deepseek_models:
-        model_list_markdown += "### [Google Cloud Vertex AI](https://console.cloud.google.com/vertex-ai/model-garden)\n\n"
-        model_list_markdown += "Very stringent payment verification for Google Cloud.\n\n"
-        model_list_markdown += "<table><thead><tr><th>Model Name</th><th>Model Limits</th></tr></thead><tbody>\n"
-
-    # Write Gemini models to table
-    first_gemini = True
-    if vertex_gemini_models:
-        for model in vertex_gemini_models:
-            limits_str = get_human_limits(model)
-            model_list_markdown += f'<tr><td><a href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/gemini-experimental" target="_blank">{model['name']}</a></td>'
-            if first_gemini:
-                model_list_markdown += f'<td rowspan="{len(vertex_gemini_models)}">{limits_str}<br>Shared Quota</td>'
-                first_gemini = False
-            model_list_markdown += "</tr>\n"
-
-    # Write Llama models to table
-    if vertex_llama_models:
-        for model in vertex_llama_models:
-            limits_str = get_human_limits(model)
-            model_list_markdown += f'<tr><td><a href="https://console.cloud.google.com/vertex-ai/publishers/meta/model-garden/{model['urlId']}" target="_blank">{model['name']}</a></td><td>{limits_str}<br>Free during preview</td></tr>\n'
-
-    # Write DeepSeek models to table
-    if vertex_deepseek_models:
-        for model in vertex_deepseek_models:
-            limits_str = get_human_limits(model)
-            model_list_markdown += f'<tr><td><a href="https://console.cloud.google.com/vertex-ai/publishers/deepseek-ai/model-garden/{model['urlId']}" target="_blank">{model['name']}</a></td><td>{limits_str}<br>Free during preview</td></tr>\n'
-
-    if vertex_llama_models or vertex_gemini_models or vertex_deepseek_models:
-        model_list_markdown += "</tbody></table>\n\n"
-
-    # --- Trial Providers Section Generation ---
+    # ---------- Trial ----------
     trial_list_markdown = ""
-
-    # --- Static Trial Providers (Markdown List/Simple Entry) ---
     trial_providers_static = [
         {
             "name": "Fireworks",
             "url": "https://fireworks.ai/",
             "credits": "$1",
             "requirements": "",
-            "models_desc": "[Various open models](https://fireworks.ai/models)",
+            "models_desc": "[Berbagai model open](https://fireworks.ai/models)",
         },
         {
             "name": "Baseten",
             "url": "https://app.baseten.co/",
             "credits": "$30",
             "requirements": "",
-            "models_desc": "[Any supported model - pay by compute time](https://www.baseten.co/library/)",
+            "models_desc": "[Model yang didukung — bayar per waktu compute](https://www.baseten.co/library/)",
         },
         {
             "name": "Nebius",
             "url": "https://tokenfactory.nebius.com/",
             "credits": "$1",
             "requirements": "",
-            "models_desc": "[Various open models](https://tokenfactory.nebius.com/models)",
+            "models_desc": "[Berbagai model open](https://tokenfactory.nebius.com/models)",
         },
         {
             "name": "Novita",
-            "url": "https://novita.ai/?ref=ytblmjc&utm_source=affiliate",
-            "credits": "$0.5 for 1 year",
+            "url": "https://novita.ai/",
+            "credits": "$0,5 selama 1 tahun",
             "requirements": "",
-            "models_desc": "[Various open models](https://novita.ai/models)",
+            "models_desc": "[Berbagai model open](https://novita.ai/models)",
         },
         {
             "name": "AI21",
             "url": "https://studio.ai21.com/",
-            "credits": "$10 for 3 months",
+            "credits": "$10 selama 3 bulan",
             "requirements": "",
-            "models_desc": "Jamba family of models",
+            "models_desc": "Family model Jamba",
         },
         {
             "name": "Upstage",
             "url": "https://console.upstage.ai/",
-            "credits": "$10 for 3 months",
+            "credits": "$10 selama 3 bulan",
             "requirements": "",
             "models_desc": "Solar Pro/Mini",
         },
@@ -961,76 +1149,99 @@ def main():
             "name": "NLP Cloud",
             "url": "https://nlpcloud.com/home",
             "credits": "$15",
-            "requirements": "Phone number verification",
-            "models_desc": "Various open models",
+            "requirements": "📱 Verifikasi nomor HP",
+            "models_desc": "Berbagai model open",
         },
         {
             "name": "Alibaba Cloud (International) Model Studio",
             "url": "https://bailian.console.alibabacloud.com/",
-            "credits": "1 million tokens/model, valid for 90 days (Singapore endpoint only)",
+            "credits": "1 juta token/model, berlaku 90 hari (endpoint Singapore)",
             "requirements": "",
-            "models_desc": "[Various open and proprietary Qwen models](https://www.alibabacloud.com/en/product/modelstudio)",
+            "models_desc": "[Model open dan proprietary Qwen](https://www.alibabacloud.com/en/product/modelstudio)",
         },
         {
             "name": "Modal",
             "url": "https://modal.com",
-            "credits": "$30/month on the Starter plan",
+            "credits": "$30/bulan di plan Starter",
             "requirements": "",
-            "models_desc": "Any supported model - pay by compute time",
+            "models_desc": "Model yang didukung — bayar per waktu compute",
         },
         {
             "name": "Inference.net",
             "url": "https://inference.net",
-            "credits": "$1, $25 on responding to email survey",
+            "credits": "$1, plus $25 jika mengisi survei email",
             "requirements": "",
-            "models_desc": "Various open models",
+            "models_desc": "Berbagai model open",
         },
     ]
 
     for provider in trial_providers_static:
         trial_list_markdown += f"### [{provider['name']}]({provider['url']})\n\n"
-        trial_list_markdown += f"**Credits:** {provider['credits']}\n\n"
-        if provider["requirements"]:
-            trial_list_markdown += f"**Requirements:** {provider['requirements']}\n\n"
-        trial_list_markdown += f"**Models:** {provider['models_desc']}\n\n"
+        trial_list_markdown += provider_meta(
+            "🟡 Trial",
+            provider["credits"],
+            provider["requirements"] or None,
+        )
+        trial_list_markdown += f"**Model:** {provider['models_desc']}\n\n"
 
-    # --- Hyperbolic (Trial - Table) ---
     if hyperbolic_models:
         trial_list_markdown += "### [Hyperbolic](https://app.hyperbolic.ai/)\n\n"
-        trial_list_markdown += "**Credits:** $1\n\n"
-        trial_list_markdown += "**Models:**\n"
+        trial_list_markdown += provider_meta("🟡 Trial", "Kredit ~$1", None)
+        trial_list_markdown += "**Model:**\n\n"
         for model in hyperbolic_models:
             trial_list_markdown += f"- {model['name']}\n"
         trial_list_markdown += "\n"
+    else:
+        trial_list_markdown += "### [Hyperbolic](https://app.hyperbolic.ai/)\n\n"
+        trial_list_markdown += provider_meta(
+            "🟡 Trial",
+            "Kredit ~$1",
+            "Daftar model tidak di-fetch (butuh `HYPERBOLIC_API_KEY`).",
+        )
 
-    # --- SambaNova Cloud (Trial - Table) ---
     if samba_models:
         trial_list_markdown += "### [SambaNova Cloud](https://cloud.sambanova.ai/)\n\n"
-        trial_list_markdown += "**Credits:** $5 for 3 months\n\n"
-        trial_list_markdown += "**Models:**\n"
+        trial_list_markdown += provider_meta(
+            "🟡 Trial", "Kredit ~$5 selama 3 bulan", None
+        )
+        trial_list_markdown += "**Model:**\n\n"
         for model in samba_models:
-            trial_list_markdown += f"- {model['name']}\n"   
-        trial_list_markdown += "\n"
-
-    # --- Scaleway Generative APIs (Trial - Table) ---
-    if scaleway_models:
-        trial_list_markdown += "### [Scaleway Generative APIs](https://console.scaleway.com/generative-api/models)\n\n"
-        trial_list_markdown += "**Credits:** 1,000,000 free tokens, plus 60 minutes of audio transcription\n\n"
-        trial_list_markdown += "**Models:**\n"
-        for model in scaleway_models:
             trial_list_markdown += f"- {model['name']}\n"
         trial_list_markdown += "\n"
 
+    if scaleway_models:
+        trial_list_markdown += "### [Scaleway Generative APIs](https://console.scaleway.com/generative-api/models)\n\n"
+        trial_list_markdown += provider_meta(
+            "🟡 Trial",
+            "1.000.000 token gratis + 60 menit transkripsi audio",
+            None,
+        )
+        trial_list_markdown += "**Model:**\n\n"
+        for model in scaleway_models:
+            trial_list_markdown += f"- {model['name']}\n"
+        trial_list_markdown += "\n"
+    else:
+        trial_list_markdown += "### [Scaleway Generative APIs](https://console.scaleway.com/generative-api/models)\n\n"
+        trial_list_markdown += provider_meta(
+            "🟡 Trial",
+            "1.000.000 token gratis + 60 menit transkripsi audio",
+            "Daftar model tidak di-fetch (butuh `SCALEWAY_API_KEY`).",
+        )
+
     if MISSING_MODELS:
-        logger.warning("Missing models:")
+        logger.warning("Model tanpa mapping nama di data.py:")
         logger.warning(
             "\n" + "\n".join([f'"{model}": "{model}",' for model in MISSING_MODELS])
         )
 
-    with open(os.path.join(script_dir, "README_template.md"), "r") as f:
+    with open(
+        os.path.join(script_dir, "README_template.md"), "r", encoding="utf-8"
+    ) as f:
         readme = f.read()
     warning = """<!---
-WARNING: DO NOT EDIT THIS FILE DIRECTLY. IT IS GENERATED BY src/pull_available_models.py
+PERINGATAN: JANGAN EDIT FILE INI LANGSUNG.
+File di-generate oleh src/pull_available_models.py
+Ubah src/README_template.md atau skrip generator-nya.
 --->
 """
     initial_templated = (
@@ -1039,9 +1250,11 @@ WARNING: DO NOT EDIT THIS FILE DIRECTLY. IT IS GENERATED BY src/pull_available_m
         .replace("{{TRIAL_LIST_MARKDOWN}}", trial_list_markdown)
     )
     toc_markdown = generate_toc(initial_templated)
-    with open(os.path.join(script_dir, "..", "README.md"), "w") as f:
+    with open(
+        os.path.join(script_dir, "..", "README.md"), "w", encoding="utf-8"
+    ) as f:
         f.write(initial_templated.replace("{{TOC}}", toc_markdown))
-    logger.info("Wrote models to README.md")
+    logger.info("README.md berhasil ditulis (bahasa Indonesia / FLA).")
 
 
 if __name__ == "__main__":
