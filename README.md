@@ -67,40 +67,7 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 ---
 
-- [Cara pakai (cepat)](#cara-pakai-cepat)
-- [Ringkasan provider](#ringkasan-provider)
-  - [🟢 Gratis (free tier)](#gratis-free-tier)
-  - [🟡 Trial (kredit percobaan)](#trial-kredit-percobaan)
-- [🟢 Provider gratis](#provider-gratis)
-  - [OpenRouter](#openrouter)
-  - [Google AI Studio](#google-ai-studio)
-  - [NVIDIA NIM](#nvidia-nim)
-  - [Mistral (La Plateforme)](#mistral-la-plateforme)
-  - [Mistral (Codestral)](#mistral-codestral)
-  - [HuggingFace Inference Providers](#huggingface-inference-providers)
-  - [Vercel AI Gateway](#vercel-ai-gateway)
-  - [Kilo Gateway](#kilo-gateway)
-  - [OpenCode Zen](#opencode-zen)
-  - [Cerebras](#cerebras)
-  - [Groq](#groq)
-  - [Cohere](#cohere)
-  - [Cloudflare Workers AI](#cloudflare-workers-ai)
-- [🟡 Provider dengan kredit trial](#provider-dengan-kredit-trial)
-  - [Fireworks](#fireworks)
-  - [Baseten](#baseten)
-  - [Nebius](#nebius)
-  - [Novita](#novita)
-  - [AI21](#ai21)
-  - [Upstage](#upstage)
-  - [NLP Cloud](#nlp-cloud)
-  - [Alibaba Cloud (International) Model Studio](#alibaba-cloud-international-model-studio)
-  - [Modal](#modal)
-  - [Inference.net](#inferencenet)
-  - [Hyperbolic](#hyperbolic)
-  - [SambaNova Cloud](#sambanova-cloud)
-  - [Scaleway Generative APIs](#scaleway-generative-apis)
-- [Catatan penting](#catatan-penting)
-  - [Kontribusi & regenerate](#kontribusi-regenerate)
+
 
 ---
 
@@ -108,27 +75,44 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 ### [OpenRouter](https://openrouter.ai)
 
+
 > **Jenis:** 🟢 Gratis
 > **Batas:** [20 req/menit<br>50 req/hari<br>sampai ~1.000 req/hari jika pernah top-up $10](https://openrouter.ai/docs/api/reference/limits)
 > **Catatan:** Semua model free berbagi kuota yang sama.
 
+
 **Model gratis:**
 
+
 - [Cohere North Mini Code](https://openrouter.ai/cohere/north-mini-code:free)
+
 - [Gemma 4 26B A4B Instruct](https://openrouter.ai/google/gemma-4-26b-a4b-it:free)
+
 - [Gemma 4 31B Instruct](https://openrouter.ai/google/gemma-4-31b-it:free)
+
 - [Ling 3.0 Flash](https://openrouter.ai/inclusionai/ling-3.0-flash:free)
+
 - [NVIDIA Nemotron 3 Nano 30B A3B](https://openrouter.ai/nvidia/nemotron-3-nano-30b-a3b:free)
+
 - [NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)](https://openrouter.ai/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free)
+
 - [NVIDIA Nemotron 3 Super 120B A12B](https://openrouter.ai/nvidia/nemotron-3-super-120b-a12b:free)
+
 - [NVIDIA Nemotron 3 Ultra 550B A55B](https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free)
+
 - [NVIDIA Nemotron 3.5 Content Safety](https://openrouter.ai/nvidia/nemotron-3.5-content-safety:free)
+
 - [NVIDIA Nemotron Nano 12B v2 VL](https://openrouter.ai/nvidia/nemotron-nano-12b-v2-vl:free)
+
 - [NVIDIA Nemotron Nano 9B v2](https://openrouter.ai/nvidia/nemotron-nano-9b-v2:free)
+
 - [OpenAI GPT-OSS 20B](https://openrouter.ai/openai/gpt-oss-20b:free)
-- [Poolside Laguna M.1](https://openrouter.ai/poolside/laguna-m.1:free)
+
 - [Poolside Laguna S 2.1](https://openrouter.ai/poolside/laguna-s-2.1:free)
+
 - [Poolside Laguna XS 2.1](https://openrouter.ai/poolside/laguna-xs-2.1:free)
+
+
 
 ### [Google AI Studio](https://aistudio.google.com)
 
@@ -136,24 +120,43 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Batas:** Beda per model (tabel di bawah)
 > **Catatan:** ⚠️ Di luar UK/CH/EEA/EU, data bisa dipakai untuk training.
 
+
 <table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>
+
 <tr><td>Gemini 3.6 Flash</td><td>250.000 token/menit<br>20 req/hari<br>5 req/menit</td></tr>
+
 <tr><td>Gemini 3.5 Flash</td><td>250.000 token/menit<br>20 req/hari<br>5 req/menit</td></tr>
+
 <tr><td>Gemini 3 Flash</td><td>250.000 token/menit<br>20 req/hari<br>5 req/menit</td></tr>
+
 <tr><td>Gemini 3.5 Flash-Lite</td><td>250.000 token/menit<br>500 req/hari<br>15 req/menit</td></tr>
+
 <tr><td>Gemini 3.1 Flash-Lite</td><td>250.000 token/menit<br>500 req/hari<br>15 req/menit</td></tr>
+
 <tr><td>Gemini 2.5 Flash</td><td>250.000 token/menit<br>20 req/hari<br>5 req/menit</td></tr>
+
 <tr><td>Gemini 2.5 Flash-Lite</td><td>250.000 token/menit<br>20 req/hari<br>10 req/menit</td></tr>
+
 <tr><td>Gemini 3.1 Flash TTS</td><td>10.000 token/menit<br>10 req/hari<br>3 req/menit</td></tr>
+
 <tr><td>Gemini 2.5 Flash TTS</td><td>10.000 token/menit<br>10 req/hari<br>3 req/menit</td></tr>
+
 <tr><td>Gemini Robotics-ER 1.6</td><td>250.000 token/menit<br>20 req/hari<br>5 req/menit</td></tr>
+
 <tr><td>Gemini Robotics-ER 1.5</td><td>250.000 token/menit<br>20 req/hari<br>10 req/menit</td></tr>
+
 <tr><td>Gemma 4 31B Instruct</td><td>16.000 token/menit<br>14.400 req/hari<br>30 req/menit</td></tr>
+
 <tr><td>Gemma 4 26B A4B Instruct</td><td>16.000 token/menit<br>14.400 req/hari<br>30 req/menit</td></tr>
+
 <tr><td>Gemma 3 27B Instruct</td><td>15.000 token/menit<br>14.400 req/hari<br>30 req/menit</td></tr>
+
 <tr><td>Gemma 3 12B Instruct</td><td>15.000 token/menit<br>14.400 req/hari<br>30 req/menit</td></tr>
+
 <tr><td>Gemma 3 4B Instruct</td><td>15.000 token/menit<br>14.400 req/hari<br>30 req/menit</td></tr>
+
 <tr><td>Gemma 3 1B Instruct</td><td>15.000 token/menit<br>14.400 req/hari<br>30 req/menit</td></tr>
+
 </tbody></table>
 
 ### [NVIDIA NIM](https://build.nvidia.com/explore/discover)
@@ -161,6 +164,7 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Jenis:** 🟢 Gratis
 > **Batas:** 40 req/menit
 > **Catatan:** 📱 Wajib verifikasi HP. Context window model sering terbatas.
+
 
 - [Berbagai model open](https://build.nvidia.com/models)
 
@@ -170,6 +174,7 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Batas:** Per model dan organisasi — cek [halaman limits](https://admin.mistral.ai/plateforme/limits)
 > **Catatan:** 📱 Verifikasi HP. Free tier biasanya butuh setuju data training. Perkiraan akun baru (Juli 2026): 25rb–20jt token/menit dan 0,03–12,5 req/detik tergantung model.
 
+
 - [Model open dan proprietary Mistral](https://docs.mistral.ai/getting-started/models/models_overview/)
 
 ### [Mistral (Codestral)](https://codestral.mistral.ai/)
@@ -177,6 +182,7 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Jenis:** 🟢 Gratis
 > **Batas:** 30 req/menit, 2.000 req/hari
 > **Catatan:** 📱 Verifikasi HP. Langganan bulanan (tier free).
+
 
 - Codestral
 
@@ -186,6 +192,7 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Batas:** [~$0,10/bulan](https://huggingface.co/docs/inference-providers/en/pricing)
 > **Catatan:** Serverless biasanya untuk model di bawah 10GB; beberapa model populer tetap didukung meski lebih besar.
 
+
 - Berbagai model open di provider yang didukung
 
 ### [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)
@@ -194,32 +201,49 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Batas:** [~$5/bulan](https://vercel.com/docs/ai-gateway/pricing)
 > **Catatan:** Meroute ke banyak provider. Free tier hanya subset katalog, limit per model.
 
+
+
 ### [Kilo Gateway](https://kilo.ai/docs/gateway)
 
 > **Jenis:** 🟢 Gratis
 > **Batas:** [200 req/jam per IP, semua model free berbagi](https://kilo.ai/docs/gateway/usage-and-billing#rate-limiting)
 > **Catatan:** ⚠️ Gateway OpenAI-compatible. Model free bisa memakai prompt untuk training. Bisa tanpa akun.
 
+
+
 **Model gratis:**
 
+
 - Cohere North Mini Code
+
 - Kilo Auto Free (Router)
+
 - Ling 3.0 Flash
+
 - NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)
+
 - NVIDIA Nemotron 3 Super 120B A12B
+
 - NVIDIA Nemotron 3 Ultra 550B A55B
+
 - NVIDIA Nemotron 3.5 Content Safety
+
 - OpenRouter Free Models (Router)
-- Poolside Laguna M.1
+
 - Poolside Laguna S 2.1
+
 - Poolside Laguna XS 2.1
+
 - StepFun Step 3.7 Flash
+
+
 
 ### [OpenCode Zen](https://opencode.ai/docs/zen/)
 
 > **Jenis:** 🟢 Gratis (sebagian model)
 > **Batas:** Lihat situs OpenCode Zen
 > **Catatan:** ⚠️ Gateway dengan model kurasi. Data model free bisa dipakai improvement.
+
 
 **Model free (daftar statis):**
 
@@ -237,10 +261,16 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Batas:** 5 req/menit · 30.000 token/menit · 1.000.000 token/jam · 1.000.000 token/hari
 > **Catatan:** Limit ketat; cocok untuk uji coba.
 
+
 <table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>
+
+
 <tr><td>gpt-oss-120b</td><td>5 req/menit<br>30.000 token/menit<br>1.000.000 token/jam<br>1.000.000 token/hari</td></tr>
+
 <tr><td>zai-glm-4.7</td><td>5 req/menit<br>30.000 token/menit<br>1.000.000 token/jam<br>1.000.000 token/hari</td></tr>
+
 <tr><td>gemma-4-31b</td><td>5 req/menit<br>30.000 token/menit<br>1.000.000 token/jam<br>1.000.000 token/hari</td></tr>
+
 </tbody></table>
 
 ### [Groq](https://console.groq.com)
@@ -249,7 +279,10 @@ Ubah src/README_template.md atau skrip generator-nya.
 > **Batas:** Beda per model (tabel)
 > **Catatan:** Inference cepat. Limit diukur dari header rate-limit API jika key tersedia saat generate.
 
+
+
 _Daftar model Groq tidak di-fetch (butuh `GROQ_API_KEY`)._
+
 
 ### [Cohere](https://cohere.com)
 
@@ -257,7 +290,10 @@ _Daftar model Groq tidak di-fetch (butuh `GROQ_API_KEY`)._
 > **Batas:** [20 req/menit · 1.000 req/bulan](https://docs.cohere.com/docs/rate-limits)
 > **Catatan:** Semua model chat berbagi kuota bulanan.
 
+
+
 _Daftar model tidak di-fetch (butuh `COHERE_API_KEY`)._
+
 
 ### [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai)
 
@@ -265,55 +301,69 @@ _Daftar model tidak di-fetch (butuh `COHERE_API_KEY`)._
 > **Batas:** [10.000 neuron/hari](https://developers.cloudflare.com/workers-ai/platform/pricing/#free-allocation)
 > **Catatan:** Fokus text generation di daftar otomatis.
 
-_Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
+
+_Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
 
 ---
 
 ## 🟡 Provider dengan kredit trial
 
+
 ### [Fireworks](https://fireworks.ai/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $1
 
+
 **Model:** [Berbagai model open](https://fireworks.ai/models)
+
 
 ### [Baseten](https://app.baseten.co/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $30
 
+
 **Model:** [Model yang didukung — bayar per waktu compute](https://www.baseten.co/library/)
+
 
 ### [Nebius](https://tokenfactory.nebius.com/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $1
 
+
 **Model:** [Berbagai model open](https://tokenfactory.nebius.com/models)
+
 
 ### [Novita](https://novita.ai/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $0,5 selama 1 tahun
 
+
 **Model:** [Berbagai model open](https://novita.ai/models)
+
 
 ### [AI21](https://studio.ai21.com/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $10 selama 3 bulan
 
+
 **Model:** Family model Jamba
+
 
 ### [Upstage](https://console.upstage.ai/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $10 selama 3 bulan
 
+
 **Model:** Solar Pro/Mini
+
 
 ### [NLP Cloud](https://nlpcloud.com/home)
 
@@ -321,54 +371,79 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 > **Batas:** $15
 > **Catatan:** 📱 Verifikasi nomor HP
 
+
 **Model:** Berbagai model open
+
 
 ### [Alibaba Cloud (International) Model Studio](https://bailian.console.alibabacloud.com/)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** 1 juta token/model, berlaku 90 hari (endpoint Singapore)
 
+
 **Model:** [Model open dan proprietary Qwen](https://www.alibabacloud.com/en/product/modelstudio)
+
 
 ### [Modal](https://modal.com)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $30/bulan di plan Starter
 
+
 **Model:** Model yang didukung — bayar per waktu compute
+
 
 ### [Inference.net](https://inference.net)
 
 > **Jenis:** 🟡 Trial
 > **Batas:** $1, plus $25 jika mengisi survei email
 
+
 **Model:** Berbagai model open
 
+
+
 ### [Hyperbolic](https://app.hyperbolic.ai/)
+
 
 > **Jenis:** 🟡 Trial
 > **Batas:** Kredit ~$1
 > **Catatan:** Daftar model tidak di-fetch (butuh `HYPERBOLIC_API_KEY`).
 
+
+
+
 ### [SambaNova Cloud](https://cloud.sambanova.ai/)
+
 
 > **Jenis:** 🟡 Trial
 > **Batas:** Kredit ~$5 selama 3 bulan
 
+
 **Model:**
 
+
 - DeepSeek V3.1
+
 - DeepSeek V3.2
+
 - Gemma 4 31B Instruct
+
 - Llama 3.3 70B Instruct
+
 - MiniMax M2.7
+
 - OpenAI GPT-OSS 120B
 
+
+
 ### [Scaleway Generative APIs](https://console.scaleway.com/generative-api/models)
+
 
 > **Jenis:** 🟡 Trial
 > **Batas:** 1.000.000 token gratis + 60 menit transkripsi audio
 > **Catatan:** Daftar model tidak di-fetch (butuh `SCALEWAY_API_KEY`).
+
 
 
 
