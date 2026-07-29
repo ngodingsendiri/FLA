@@ -12,6 +12,8 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write
+    env:
+      GCP_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -26,7 +28,7 @@ jobs:
 
       # Auth GCP opsional (isi secret GCP_* di repo Settings jika mau limit Gemini live)
       - id: auth
-        if: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
+        if: env.GCP_PROVIDER != ''
         continue-on-error: true
         uses: google-github-actions/auth@v3
         with:
