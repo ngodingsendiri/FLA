@@ -4,7 +4,6 @@ from concurrent.futures import ThreadPoolExecutor
 
 from google.cloud import cloudquotas_v1
 
-from data import HYPERBOLIC_IGNORED_MODELS, OPENROUTER_IGNORED_MODELS
 from utils import env_ready, get_model_name, get_session
 
 # ── HTTP session (shared, with auto-retry) ─────────────────────────────────
@@ -124,70 +123,6 @@ def fetch_groq_models(logger) -> list[dict]:
     return sorted(ret_models, key=lambda x: x["name"])
 
 
-# ── OpenRouter ─────────────────────────────────────────────────────────────
-def fetch_openrouter_models(logger) -> list[dict]:
-    logger.info("Fetching OpenRouter models...")
-    r = session.get(
-        "https://openrouter.ai/api/v1/models",
-        headers={"Content-Type": "application/json"},
-        timeout=15,
-    )
-    r.raise_for_status()
-    ret_models: list[dict] = []
-    for model in r.json()["data"]:
-        pricing = float(model.get("pricing", {}).get("completion", "1")) + float(
-            model.get("pricing", {}).get("prompt", "1")
-        )
-        if pricing != 0 or ":free" not in model["id"]:
-            continue
-        if model["id"].lower() in OPENROUTER_IGNORED_MODELS:
-            continue
-        ret_models.append({
-            "id": model["id"],
-            "name": get_model_name(model["id"]),
-            "limits": {"requests/minute": 20, "requests/day": 50},
-        })
-    return sorted(ret_models, key=lambda x: x["name"])
-
-
-# ── Cloudflare ─────────────────────────────────────────────────────────────
-def fetch_cloudflare_models(logger) -> list[dict]:
-    logger.info("Fetching Cloudflare models...")
-    r = session.get(
-        f"https://api.cloudflare.com/client/v4/accounts/{os.environ['CLOUDFLARE_ACCOUNT_ID']}/ai/models/search?search=Text+Generation",
-        headers={
-            "Authorization": f'Bearer {os.environ["CLOUDFLARE_API_KEY"]}',
-            "Content-Type": "application/json",
-        },
-        timeout=15,
-    )
-    r.raise_for_status()
-    return sorted(
-        [{"id": m["name"], "name": get_model_name(m["name"])} for m in r.json()["result"]],
-        key=lambda x: x["name"],
-    )
-
-
-# ── Hyperbolic ─────────────────────────────────────────────────────────────
-def fetch_hyperbolic_models(logger) -> list[dict]:
-    logger.info("Fetching Hyperbolic models from API...")
-    r = session.get(
-        "https://api.hyperbolic.xyz/v1/models",
-        headers={
-            "accept": "application/json",
-            "authorization": f"Bearer {os.environ['HYPERBOLIC_API_KEY']}",
-        },
-        timeout=15,
-    )
-    r.raise_for_status()
-    return sorted(
-        [
-            {"id": m["id"], "name": get_model_name(m["id"]), "limits": {"requests/minute": 60}}
-            for m in r.json()["data"]
-            if m["id"] not in HYPERBOLIC_IGNORED_MODELS
-        ],
-        key=lambda x: x["name"],
-    )
 
 
 # ── Gemini (GCP Quotas) ────────────────────────────────────────────────────
@@ -209,90 +144,6 @@ def fetch_gemini_limits(logger) -> dict:
                     models[dim.dimensions.get("model")][f"requests/{quota.refresh_interval}"] = dim.details.value
     return models
 
-
-# ── SambaNova ──────────────────────────────────────────────────────────────
-def fetch_samba_models(logger) -> list[dict]:
-    logger.info("Fetching SambaNova models...")
-    r = session.get("https://api.sambanova.ai/v1/models", timeout=15)
-    r.raise_for_status()
-    return sorted(
-        [{"id": m["id"], "name": get_model_name(m["id"])} for m in r.json()["data"]],
-        key=lambda x: x["name"],
-    )
-
-
-# ── Scaleway ───────────────────────────────────────────────────────────────
-def fetch_scaleway_models(logger) -> list[dict]:
-    logger.info("Fetching Scaleway models...")
-    r = session.get(
-        "https://api.scaleway.ai/v1/models",
-        headers={"Authorization": f"Bearer {os.environ['SCALEWAY_API_KEY']}"},
-        timeout=15,
-    )
-    r.raise_for_status()
-    return sorted(
-        [{"id": m["id"], "name": get_model_name(m["id"])} for m in r.json()["data"]],
-        key=lambda x: x["name"],
-    )
-
-
-# ── Cohere ─────────────────────────────────────────────────────────────────
-def fetch_cohere_models(logger) -> list[dict]:
-    logger.info("Fetching Cohere models...")
-    headers = {
-        "accept": "application/json",
-        "Authorization": f"Bearer {os.environ['COHERE_API_KEY']}",
-    }
-    params: dict = {}
-    all_models: list[dict] = []
-    try:
-        while True:
-            response = session.get(
-                "https://api.cohere.com/v1/models",
-                headers=headers,
-                params=params or None,
-                timeout=15,
-            )
-            response.raise_for_status()
-            payload = response.json()
-            all_models.extend(payload.get("models", []))
-            next_token = payload.get("next_page_token")
-            if not next_token:
-                break
-            params["page_token"] = next_token
-    except Exception as exc:
-        logger.exception(f"Error fetching Cohere models: {exc}")
-        return []
-
-    return sorted(
-        [
-            {"id": m["name"], "name": get_model_name(m["name"])}
-            for m in all_models
-            if m.get("name")
-            and not m.get("is_deprecated")
-            and "chat" in (set(m.get("endpoints") or []) | set(m.get("default_endpoints") or []))
-        ],
-        key=lambda x: x["name"],
-    )
-
-
-# ── Kilo ───────────────────────────────────────────────────────────────────
-def fetch_kilo_models(logger) -> list[dict]:
-    logger.info("Fetching Kilo Gateway models...")
-    r = session.get(
-        "https://api.kilo.ai/api/gateway/models",
-        headers={"Content-Type": "application/json"},
-        timeout=15,
-    )
-    r.raise_for_status()
-    return sorted(
-        [
-            {"id": m["id"], "name": get_model_name(m["id"])}
-            for m in r.json()["data"]
-            if m.get("isFree", False)
-        ],
-        key=lambda x: x["name"],
-    )
 
 
 # ── Artificial Analysis (Intelligence Scores) ──────────────────────────────

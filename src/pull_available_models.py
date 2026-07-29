@@ -2,6 +2,9 @@
 """
 FLA — Free LLM API
 Skrip utama: ambil data dari semua provider, render README.md & api/models.json.
+
+Provider "sederhana" dikonfigurasi lewat config/providers.yaml.
+Provider "kompleks" (Groq, Gemini) tetap di-handle lewat fetchers.py.
 """
 
 import json
@@ -13,18 +16,12 @@ from jinja2 import Environment, FileSystemLoader
 
 from data import FALLBACK_GEMINI_LIMITS, TRIAL_PROVIDERS_STATIC
 from fetchers import (
-    fetch_cloudflare_models,
-    fetch_cohere_models,
     fetch_gemini_limits,
     fetch_groq_models,
-    fetch_hyperbolic_models,
     fetch_intelligence_scores,
-    fetch_kilo_models,
-    fetch_openrouter_models,
-    fetch_samba_models,
-    fetch_scaleway_models,
     safe_fetch,
 )
+from provider_engine import fetch_generic_provider, load_providers_config
 from utils import (
     MISSING_MODELS,
     create_logger,
@@ -37,6 +34,9 @@ load_dotenv()
 
 _SCRIPT_DIR = Path(__file__).parent
 _REPO_ROOT = _SCRIPT_DIR.parent
+
+# Provider yang punya custom handler Python (tidak diambil dari YAML engine)
+_CUSTOM_PROVIDERS = {"groq", "gemini"}
 
 
 # ── Gemini model list ──────────────────────────────────────────────────────
@@ -72,19 +72,20 @@ def _build_gemini_models(gemini_data: dict) -> list[dict]:
 def main() -> None:
     logger = create_logger("Main")
 
-    loggers = {
-        "gemini":     create_logger("Google AI Studio"),
-        "openrouter": create_logger("OpenRouter"),
-        "hyperbolic": create_logger("Hyperbolic"),
-        "cloudflare": create_logger("Cloudflare"),
-        "samba":      create_logger("SambaNova"),
-        "scaleway":   create_logger("Scaleway"),
-        "cohere":     create_logger("Cohere"),
-        "kilo":       create_logger("Kilo"),
-        "groq":       create_logger("Groq"),
-        "aa":         create_logger("Artificial Analysis"),
-    }
+    # ── Muat konfigurasi provider dari YAML ───────────────────────────────
+    providers_cfg: dict = load_providers_config().get("providers", {})
+    yaml_providers = {k: v for k, v in providers_cfg.items() if k not in _CUSTOM_PROVIDERS}
 
+    # ── Buat logger untuk semua provider ──────────────────────────────────
+    loggers: dict = {
+        key: create_logger(cfg.get("display_name", key.capitalize()))
+        for key, cfg in providers_cfg.items()
+    }
+    loggers["gemini"] = create_logger("Google AI Studio")
+    loggers["groq"]   = create_logger("Groq")
+    loggers["aa"]     = create_logger("Artificial Analysis")
+
+    # ── Bangun tasks: YAML providers + custom ─────────────────────────────
     def fetch_gemini():
         g = safe_fetch(
             "Google AI Studio",
@@ -98,18 +99,19 @@ def main() -> None:
             g = dict(FALLBACK_GEMINI_LIMITS)
         return "gemini", g
 
-    tasks: dict[str, callable] = {
-        "gemini":     fetch_gemini,
-        "openrouter": lambda: ("openrouter", safe_fetch("OpenRouter", fetch_openrouter_models, loggers["openrouter"])),
-        "hyperbolic": lambda: ("hyperbolic", safe_fetch("Hyperbolic", fetch_hyperbolic_models, loggers["hyperbolic"], needed_env=("HYPERBOLIC_API_KEY",))),
-        "cloudflare": lambda: ("cloudflare", safe_fetch("Cloudflare", fetch_cloudflare_models, loggers["cloudflare"], needed_env=("CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_KEY"))),
-        "samba":      lambda: ("samba",      safe_fetch("SambaNova",  fetch_samba_models,      loggers["samba"])),
-        "scaleway":   lambda: ("scaleway",   safe_fetch("Scaleway",   fetch_scaleway_models,   loggers["scaleway"], needed_env=("SCALEWAY_API_KEY",))),
-        "cohere":     lambda: ("cohere",     safe_fetch("Cohere",     fetch_cohere_models,     loggers["cohere"],   needed_env=("COHERE_API_KEY",))),
-        "kilo":       lambda: ("kilo",       safe_fetch("Kilo",       fetch_kilo_models,       loggers["kilo"])),
-        "groq":       lambda: ("groq",       safe_fetch("Groq",       fetch_groq_models,       loggers["groq"],     needed_env=("GROQ_API_KEY",))),
-    }
+    tasks: dict = {}
 
+    # Provider dari YAML (generik)
+    for key, cfg in yaml_providers.items():
+        tasks[key] = lambda k=key, c=cfg: (k, fetch_generic_provider(k, c, loggers[k]))
+
+    # Custom handlers
+    tasks["gemini"] = fetch_gemini
+    tasks["groq"]   = lambda: ("groq", safe_fetch(
+        "Groq", fetch_groq_models, loggers["groq"], needed_env=("GROQ_API_KEY",)
+    ))
+
+    # ── Jalankan fetch secara paralel ─────────────────────────────────────
     results: dict = {}
     logger.info("Starting concurrent fetches...")
     with ThreadPoolExecutor(max_workers=len(tasks)) as executor:
@@ -122,7 +124,7 @@ def main() -> None:
             except Exception as exc:
                 logger.exception(f"Task '{task_name}' generated an exception: {exc}")
 
-    # ── Fetch Intelligence Scores (serial, setelah semua fetch selesai) ────
+    # ── Fetch Intelligence Scores (serial, setelah semua fetch selesai) ───
     intelligence_scores = safe_fetch(
         "Artificial Analysis",
         fetch_intelligence_scores,
@@ -151,15 +153,15 @@ def main() -> None:
         cloudflare_models=results.get("cloudflare", []),
         trial_providers_static=TRIAL_PROVIDERS_STATIC,
         hyperbolic_models=results.get("hyperbolic", []),
-        samba_models=results.get("samba", []),
+        samba_models=results.get("sambanova", []),
         scaleway_models=results.get("scaleway", []),
     )
 
-    warning_header = """<!---
+    warning_header = """<!--
 PERINGATAN: JANGAN EDIT FILE INI LANGSUNG.
 File di-generate oleh src/pull_available_models.py
 Ubah src/README_template.md atau skrip generator-nya.
---->
+-->
 """
     final_content = warning_header + rendered
     final_content = final_content.replace("{{TOC}}", generate_toc(final_content))
@@ -172,35 +174,45 @@ Ubah src/README_template.md atau skrip generator-nya.
     api_dir = _REPO_ROOT / "api"
     api_dir.mkdir(exist_ok=True)
 
-    # ── Inject intelligence scores & sort by score ────────────────────────
     def inject_scores(models: list[dict]) -> list[dict]:
         """Tambahkan intelligence_score ke setiap model, lalu sort DESC."""
         for m in models:
             name_lower = m.get("name", "").lower()
-            id_lower = m.get("id", "").lower()
+            id_lower   = m.get("id", "").lower()
             score = intelligence_scores.get(name_lower) or intelligence_scores.get(id_lower)
             m["intelligence_score"] = score
-        # Model dengan skor tampil dulu (desc), sisanya di belakang
-        return sorted(models, key=lambda x: (x["intelligence_score"] is None, -(x["intelligence_score"] or 0)))
+        return sorted(
+            models,
+            key=lambda x: (x["intelligence_score"] is None, -(x["intelligence_score"] or 0)),
+        )
+
+    # Bangun providers_json secara DINAMIS dari YAML + custom providers
+    providers_json: dict = {}
+
+    # Provider dari YAML
+    for key, cfg in providers_cfg.items():
+        if key in _CUSTOM_PROVIDERS:
+            continue
+        providers_json[key] = {
+            "tier":   cfg.get("tier", "free"),
+            "models": inject_scores(results.get(key, [])),
+        }
+
+    # Custom providers
+    providers_json["gemini"] = {"tier": "free",  "models": inject_scores(gemini_text_models)}
+    providers_json["groq"]   = {"tier": "free",  "models": inject_scores(results.get("groq", []))}
 
     models_json: dict = {
-        "generated_at": __import__("datetime").datetime.now(__import__("datetime").UTC).isoformat().replace("+00:00", "Z"),
-        "providers": {
-            "openrouter":  {"tier": "free",  "models": inject_scores(results.get("openrouter", []))},
-            "gemini":      {"tier": "free",  "models": inject_scores(gemini_text_models)},
-            "groq":        {"tier": "free",  "models": inject_scores(results.get("groq", []))},
-            "cohere":      {"tier": "free",  "models": inject_scores(results.get("cohere", []))},
-            "kilo":        {"tier": "free",  "models": inject_scores(results.get("kilo", []))},
-            "cloudflare":  {"tier": "free",  "models": inject_scores(results.get("cloudflare", []))},
-            "hyperbolic":  {"tier": "trial", "models": inject_scores(results.get("hyperbolic", []))},
-            "sambanova":   {"tier": "trial", "models": inject_scores(results.get("samba", []))},
-            "scaleway":    {"tier": "trial", "models": inject_scores(results.get("scaleway", []))},
-        },
+        "generated_at": __import__("datetime").datetime.now(
+            __import__("datetime").UTC
+        ).isoformat().replace("+00:00", "Z"),
+        "providers": providers_json,
     }
 
     json_path = api_dir / "models.json"
     json_path.write_text(json.dumps(models_json, ensure_ascii=False, indent=2), encoding="utf-8")
-    logger.info(f"api/models.json berhasil ditulis ({sum(len(p['models']) for p in models_json['providers'].values())} model total).")
+    total = sum(len(p["models"]) for p in models_json["providers"].values())
+    logger.info(f"api/models.json berhasil ditulis ({total} model total).")
 
 
 if __name__ == "__main__":

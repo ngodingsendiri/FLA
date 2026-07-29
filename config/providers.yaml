@@ -1,0 +1,127 @@
+# config/providers.yaml
+# ═══════════════════════════════════════════════════════════════════════════
+# DAFTAR PROVIDER LLM — KONFIGURASI DEKLARATIF
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# Untuk MENAMBAH provider baru, cukup tambah blok baru di bawah dan masukkan
+# API key ke GitHub Repository Secrets (Settings → Secrets → Actions).
+#
+# Schema tiap provider:
+#   display_name    : Nama tampilan (untuk log & UI)
+#   tier            : "free" atau "trial"
+#   url             : URL endpoint API (bisa pakai {ENV_VAR} untuk substitusi)
+#   url_env_vars    : (opsional) Daftar nama env var yang di-substitusi ke URL
+#   auth_env        : (opsional) Nama env var untuk API key
+#   auth_type       : (opsional) "bearer" — jika tidak ada, tidak pakai auth
+#   data_path       : Key JSON dalam response yang berisi array model
+#   id_field        : Field di tiap model yang jadi ID-nya
+#   paginated       : (opsional) true jika API pakai pagination
+#   next_page_token_field: (opsional) Field yang berisi token halaman berikutnya
+#   static_limits   : (opsional) Batas penggunaan statis yang ditampilkan di UI
+#   filter          : (opsional) Aturan penyaringan model, lihat contoh di bawah
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+providers:
+
+  openrouter:
+    display_name: OpenRouter
+    tier: free
+    url: "https://openrouter.ai/api/v1/models"
+    data_path: data
+    id_field: id
+    filter:
+      type: openrouter_free   # Filter: pricing=0 DAN ":free" ada di ID model
+    static_limits:
+      requests/minute: 20
+      requests/day: 50
+
+  sambanova:
+    display_name: SambaNova
+    tier: free
+    url: "https://api.sambanova.ai/v1/models"
+    data_path: data
+    id_field: id
+
+  kilo:
+    display_name: Kilo
+    tier: free
+    url: "https://api.kilo.ai/api/gateway/models"
+    data_path: data
+    id_field: id
+    filter:
+      type: field_equals      # Filter: ambil model yang field tertentu bernilai tertentu
+      field: isFree
+      value: true
+
+  scaleway:
+    display_name: Scaleway
+    tier: trial
+    url: "https://api.scaleway.ai/v1/models"
+    auth_env: SCALEWAY_API_KEY
+    auth_type: bearer
+    data_path: data
+    id_field: id
+
+  hyperbolic:
+    display_name: Hyperbolic
+    tier: trial
+    url: "https://api.hyperbolic.xyz/v1/models"
+    auth_env: HYPERBOLIC_API_KEY
+    auth_type: bearer
+    data_path: data
+    id_field: id
+    filter:
+      type: exclude_ignored   # Filter: buang model yang ada di daftar HYPERBOLIC_IGNORED_MODELS
+    static_limits:
+      requests/minute: 60
+
+  cloudflare:
+    display_name: Cloudflare
+    tier: free
+    url: "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/models/search?search=Text+Generation"
+    url_env_vars:
+      - CLOUDFLARE_ACCOUNT_ID
+    auth_env: CLOUDFLARE_API_KEY
+    auth_type: bearer
+    data_path: result
+    id_field: name
+
+  cohere:
+    display_name: Cohere
+    tier: free
+    url: "https://api.cohere.com/v1/models"
+    auth_env: COHERE_API_KEY
+    auth_type: bearer
+    data_path: models
+    id_field: name
+    paginated: true
+    next_page_token_field: next_page_token
+    filter:
+      type: cohere_chat       # Filter: tidak deprecated DAN punya kemampuan "chat"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # CONTOH MENAMBAH PROVIDER BARU (hapus tanda '#' untuk mengaktifkan):
+  # ─────────────────────────────────────────────────────────────────────────
+  #
+  # together:
+  #   display_name: Together AI
+  #   tier: free
+  #   url: "https://api.together.xyz/v1/models"
+  #   auth_env: TOGETHER_API_KEY
+  #   auth_type: bearer
+  #   data_path: data
+  #   id_field: id
+  #   filter:
+  #     type: field_equals
+  #     field: isFree
+  #     value: true
+  #
+  # mistral:
+  #   display_name: Mistral AI
+  #   tier: free
+  #   url: "https://api.mistral.ai/v1/models"
+  #   auth_env: MISTRAL_API_KEY
+  #   auth_type: bearer
+  #   data_path: data
+  #   id_field: id

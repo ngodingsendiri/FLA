@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29T04:53:59.841836Z",
+  "generated_at": "2026-07-29T06:04:39.283681Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -10,7 +10,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "google/gemma-4-26b-a4b-it:free",
@@ -18,7 +19,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "google/gemma-4-31b-it:free",
@@ -26,7 +28,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "inclusionai/ling-3.0-flash:free",
@@ -34,7 +37,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-3-nano-30b-a3b:free",
@@ -42,7 +46,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
@@ -50,7 +55,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-3-super-120b-a12b:free",
@@ -58,7 +64,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
@@ -66,7 +73,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-3.5-content-safety:free",
@@ -74,7 +82,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-nano-12b-v2-vl:free",
@@ -82,7 +91,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "nvidia/nemotron-nano-9b-v2:free",
@@ -90,7 +100,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "openai/gpt-oss-20b:free",
@@ -98,7 +109,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "poolside/laguna-s-2.1:free",
@@ -106,7 +118,8 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "poolside/laguna-xs-2.1:free",
@@ -114,9 +127,121 @@
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
-          }
+          },
+          "intelligence_score": null
         }
       ]
+    },
+    "sambanova": {
+      "tier": "free",
+      "models": [
+        {
+          "id": "DeepSeek-V3.1",
+          "name": "DeepSeek V3.1",
+          "intelligence_score": null
+        },
+        {
+          "id": "DeepSeek-V3.2",
+          "name": "DeepSeek V3.2",
+          "intelligence_score": null
+        },
+        {
+          "id": "gemma-4-31B-it",
+          "name": "Gemma 4 31B Instruct",
+          "intelligence_score": null
+        },
+        {
+          "id": "Meta-Llama-3.3-70B-Instruct",
+          "name": "Llama 3.3 70B Instruct",
+          "intelligence_score": null
+        },
+        {
+          "id": "MiniMax-M2.7",
+          "name": "MiniMax M2.7",
+          "intelligence_score": null
+        },
+        {
+          "id": "gpt-oss-120b",
+          "name": "OpenAI GPT-OSS 120B",
+          "intelligence_score": null
+        }
+      ]
+    },
+    "kilo": {
+      "tier": "free",
+      "models": [
+        {
+          "id": "cohere/north-mini-code:free",
+          "name": "Cohere North Mini Code",
+          "intelligence_score": null
+        },
+        {
+          "id": "kilo-auto/free",
+          "name": "Kilo Auto Free (Router)",
+          "intelligence_score": null
+        },
+        {
+          "id": "inclusionai/ling-3.0-flash:free",
+          "name": "Ling 3.0 Flash",
+          "intelligence_score": null
+        },
+        {
+          "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "name": "NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)",
+          "intelligence_score": null
+        },
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "name": "NVIDIA Nemotron 3 Super 120B A12B",
+          "intelligence_score": null
+        },
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "name": "NVIDIA Nemotron 3 Ultra 550B A55B",
+          "intelligence_score": null
+        },
+        {
+          "id": "nvidia/nemotron-3.5-content-safety:free",
+          "name": "NVIDIA Nemotron 3.5 Content Safety",
+          "intelligence_score": null
+        },
+        {
+          "id": "openrouter/free",
+          "name": "OpenRouter Free Models (Router)",
+          "intelligence_score": null
+        },
+        {
+          "id": "poolside/laguna-s-2.1:free",
+          "name": "Poolside Laguna S 2.1",
+          "intelligence_score": null
+        },
+        {
+          "id": "poolside/laguna-xs-2.1:free",
+          "name": "Poolside Laguna XS 2.1",
+          "intelligence_score": null
+        },
+        {
+          "id": "stepfun/step-3.7-flash:free",
+          "name": "StepFun Step 3.7 Flash",
+          "intelligence_score": null
+        }
+      ]
+    },
+    "scaleway": {
+      "tier": "trial",
+      "models": []
+    },
+    "hyperbolic": {
+      "tier": "trial",
+      "models": []
+    },
+    "cloudflare": {
+      "tier": "free",
+      "models": []
+    },
+    "cohere": {
+      "tier": "free",
+      "models": []
     },
     "gemini": {
       "tier": "free",
@@ -128,7 +253,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 5
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-3.5-flash",
@@ -137,7 +263,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 5
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-3-flash-preview",
@@ -146,7 +273,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 5
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-3.5-flash-lite",
@@ -155,7 +283,8 @@
             "tokens/minute": 250000,
             "requests/day": 500,
             "requests/minute": 15
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-3.1-flash-lite",
@@ -164,7 +293,8 @@
             "tokens/minute": 250000,
             "requests/day": 500,
             "requests/minute": 15
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-2.5-flash",
@@ -173,7 +303,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 5
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-2.5-flash-lite",
@@ -182,7 +313,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 10
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-3.1-flash-tts-preview",
@@ -191,7 +323,8 @@
             "tokens/minute": 10000,
             "requests/day": 10,
             "requests/minute": 3
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-2.5-flash-preview-tts",
@@ -200,7 +333,8 @@
             "tokens/minute": 10000,
             "requests/day": 10,
             "requests/minute": 3
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-robotics-er-1.6-preview",
@@ -209,7 +343,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 5
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemini-robotics-er-1.5-preview",
@@ -218,7 +353,8 @@
             "tokens/minute": 250000,
             "requests/day": 20,
             "requests/minute": 10
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemma-4-31b-it",
@@ -227,7 +363,8 @@
             "tokens/minute": 16000,
             "requests/day": 14400,
             "requests/minute": 30
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemma-4-26b-a4b-it",
@@ -236,7 +373,8 @@
             "tokens/minute": 16000,
             "requests/day": 14400,
             "requests/minute": 30
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemma-3-27b-it",
@@ -245,7 +383,8 @@
             "tokens/minute": 15000,
             "requests/day": 14400,
             "requests/minute": 30
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemma-3-12b-it",
@@ -254,7 +393,8 @@
             "tokens/minute": 15000,
             "requests/day": 14400,
             "requests/minute": 30
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemma-3-4b-it",
@@ -263,7 +403,8 @@
             "tokens/minute": 15000,
             "requests/day": 14400,
             "requests/minute": 30
-          }
+          },
+          "intelligence_score": null
         },
         {
           "id": "gemma-3-1b-it",
@@ -272,106 +413,13 @@
             "tokens/minute": 15000,
             "requests/day": 14400,
             "requests/minute": 30
-          }
+          },
+          "intelligence_score": null
         }
       ]
     },
     "groq": {
       "tier": "free",
-      "models": []
-    },
-    "cohere": {
-      "tier": "free",
-      "models": []
-    },
-    "kilo": {
-      "tier": "free",
-      "models": [
-        {
-          "id": "cohere/north-mini-code:free",
-          "name": "Cohere North Mini Code"
-        },
-        {
-          "id": "kilo-auto/free",
-          "name": "Kilo Auto Free (Router)"
-        },
-        {
-          "id": "inclusionai/ling-3.0-flash:free",
-          "name": "Ling 3.0 Flash"
-        },
-        {
-          "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-          "name": "NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)"
-        },
-        {
-          "id": "nvidia/nemotron-3-super-120b-a12b:free",
-          "name": "NVIDIA Nemotron 3 Super 120B A12B"
-        },
-        {
-          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
-          "name": "NVIDIA Nemotron 3 Ultra 550B A55B"
-        },
-        {
-          "id": "nvidia/nemotron-3.5-content-safety:free",
-          "name": "NVIDIA Nemotron 3.5 Content Safety"
-        },
-        {
-          "id": "openrouter/free",
-          "name": "OpenRouter Free Models (Router)"
-        },
-        {
-          "id": "poolside/laguna-s-2.1:free",
-          "name": "Poolside Laguna S 2.1"
-        },
-        {
-          "id": "poolside/laguna-xs-2.1:free",
-          "name": "Poolside Laguna XS 2.1"
-        },
-        {
-          "id": "stepfun/step-3.7-flash:free",
-          "name": "StepFun Step 3.7 Flash"
-        }
-      ]
-    },
-    "cloudflare": {
-      "tier": "free",
-      "models": []
-    },
-    "hyperbolic": {
-      "tier": "trial",
-      "models": []
-    },
-    "sambanova": {
-      "tier": "trial",
-      "models": [
-        {
-          "id": "DeepSeek-V3.1",
-          "name": "DeepSeek V3.1"
-        },
-        {
-          "id": "DeepSeek-V3.2",
-          "name": "DeepSeek V3.2"
-        },
-        {
-          "id": "gemma-4-31B-it",
-          "name": "Gemma 4 31B Instruct"
-        },
-        {
-          "id": "Meta-Llama-3.3-70B-Instruct",
-          "name": "Llama 3.3 70B Instruct"
-        },
-        {
-          "id": "MiniMax-M2.7",
-          "name": "MiniMax M2.7"
-        },
-        {
-          "id": "gpt-oss-120b",
-          "name": "OpenAI GPT-OSS 120B"
-        }
-      ]
-    },
-    "scaleway": {
-      "tier": "trial",
       "models": []
     }
   }
