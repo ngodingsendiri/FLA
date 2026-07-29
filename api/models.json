@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29T06:04:39.283681Z",
+  "generated_at": "2026-07-29T06:49:59.796771Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -229,11 +229,135 @@
     },
     "scaleway": {
       "tier": "trial",
-      "models": []
+      "models": [
+        {
+          "id": "bge-multilingual-gemma2",
+          "name": "BGE-Multilingual-Gemma2",
+          "intelligence_score": null
+        },
+        {
+          "id": "gemma-3-27b-it",
+          "name": "Gemma 3 27B Instruct",
+          "intelligence_score": null
+        },
+        {
+          "id": "llama-3.3-70b-instruct",
+          "name": "Llama 3.3 70B Instruct",
+          "intelligence_score": null
+        },
+        {
+          "id": "gpt-oss-120b",
+          "name": "OpenAI GPT-OSS 120B",
+          "intelligence_score": null
+        },
+        {
+          "id": "pixtral-12b-2409",
+          "name": "Pixtral 12B (2409)",
+          "intelligence_score": null
+        },
+        {
+          "id": "whisper-large-v3",
+          "name": "Whisper Large v3",
+          "intelligence_score": null
+        },
+        {
+          "id": "devstral-2-123b-instruct-2512",
+          "name": "devstral-2-123b-instruct-2512",
+          "intelligence_score": null
+        },
+        {
+          "id": "gemma-4-26b-a4b-it",
+          "name": "gemma-4-26b-a4b-it",
+          "intelligence_score": null
+        },
+        {
+          "id": "glm-5.2",
+          "name": "glm-5.2",
+          "intelligence_score": null
+        },
+        {
+          "id": "holo2-30b-a3b",
+          "name": "holo2-30b-a3b",
+          "intelligence_score": null
+        },
+        {
+          "id": "mistral-medium-3.5-128b",
+          "name": "mistral-medium-3.5-128b",
+          "intelligence_score": null
+        },
+        {
+          "id": "mistral-small-3.2-24b-instruct-2506",
+          "name": "mistral-small-3.2-24b-instruct-2506",
+          "intelligence_score": null
+        },
+        {
+          "id": "qwen3-235b-a22b-instruct-2507",
+          "name": "qwen3-235b-a22b-instruct-2507",
+          "intelligence_score": null
+        },
+        {
+          "id": "qwen3-coder-30b-a3b-instruct",
+          "name": "qwen3-coder-30b-a3b-instruct",
+          "intelligence_score": null
+        },
+        {
+          "id": "qwen3-embedding-8b",
+          "name": "qwen3-embedding-8b",
+          "intelligence_score": null
+        },
+        {
+          "id": "qwen3.5-397b-a17b",
+          "name": "qwen3.5-397b-a17b",
+          "intelligence_score": null
+        },
+        {
+          "id": "qwen3.6-35b-a3b",
+          "name": "qwen3.6-35b-a3b",
+          "intelligence_score": null
+        },
+        {
+          "id": "voxtral-small-24b-2507",
+          "name": "voxtral-small-24b-2507",
+          "intelligence_score": null
+        }
+      ]
     },
     "hyperbolic": {
       "tier": "trial",
-      "models": []
+      "models": [
+        {
+          "id": "deepseek-ai/DeepSeek-V3-0324",
+          "name": "DeepSeek V3 0324",
+          "limits": {
+            "requests/minute": 60
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "meta-llama/Llama-3.3-70B-Instruct",
+          "name": "Llama 3.3 70B Instruct",
+          "limits": {
+            "requests/minute": 60
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+          "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+          "limits": {
+            "requests/minute": 60
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "deepseek-ai/DeepSeek-R1-0528",
+          "name": "deepseek-ai/DeepSeek-R1-0528",
+          "limits": {
+            "requests/minute": 60
+          },
+          "intelligence_score": null
+        }
+      ]
     },
     "cloudflare": {
       "tier": "free",
@@ -241,7 +365,63 @@
     },
     "cohere": {
       "tier": "free",
-      "models": []
+      "models": [
+        {
+          "id": "c4ai-aya-expanse-32b",
+          "name": "c4ai-aya-expanse-32b",
+          "intelligence_score": null
+        },
+        {
+          "id": "c4ai-aya-vision-32b",
+          "name": "c4ai-aya-vision-32b",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-a-03-2025",
+          "name": "command-a-03-2025",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-a-plus-05-2026",
+          "name": "command-a-plus-05-2026",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-a-reasoning-08-2025",
+          "name": "command-a-reasoning-08-2025",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-a-translate-08-2025",
+          "name": "command-a-translate-08-2025",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-a-vision-07-2025",
+          "name": "command-a-vision-07-2025",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-r-08-2024",
+          "name": "command-r-08-2024",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-r-plus-08-2024",
+          "name": "command-r-plus-08-2024",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-r7b-12-2024",
+          "name": "command-r7b-12-2024",
+          "intelligence_score": null
+        },
+        {
+          "id": "command-r7b-arabic-02-2025",
+          "name": "command-r7b-arabic-02-2025",
+          "intelligence_score": null
+        }
+      ]
     },
     "gemini": {
       "tier": "free",
@@ -420,7 +600,131 @@
     },
     "groq": {
       "tier": "free",
-      "models": []
+      "models": [
+        {
+          "id": "allam-2-7b",
+          "name": "Allam 2 7B",
+          "limits": {
+            "requests/day": 7000,
+            "tokens/minute": 6000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "llama-3.1-8b-instant",
+          "name": "Llama 3.1 8B",
+          "limits": {
+            "requests/day": 14400,
+            "tokens/minute": 6000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "llama-3.3-70b-versatile",
+          "name": "Llama 3.3 70B",
+          "limits": {
+            "requests/day": 1000,
+            "tokens/minute": 12000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "whisper-large-v3",
+          "name": "Whisper Large v3",
+          "limits": {
+            "audio-seconds/minute": null,
+            "requests/day": 2000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "whisper-large-v3-turbo",
+          "name": "Whisper Large v3 Turbo",
+          "limits": {
+            "audio-seconds/minute": null,
+            "requests/day": 2000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "canopylabs/orpheus-arabic-saudi",
+          "name": "canopylabs/orpheus-arabic-saudi",
+          "limits": {},
+          "intelligence_score": null
+        },
+        {
+          "id": "canopylabs/orpheus-v1-english",
+          "name": "canopylabs/orpheus-v1-english",
+          "limits": {},
+          "intelligence_score": null
+        },
+        {
+          "id": "groq/compound",
+          "name": "groq/compound",
+          "limits": {
+            "requests/day": 250,
+            "tokens/minute": 70000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "groq/compound-mini",
+          "name": "groq/compound-mini",
+          "limits": {
+            "requests/day": 250,
+            "tokens/minute": 70000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "meta-llama/llama-prompt-guard-2-22m",
+          "name": "meta-llama/llama-prompt-guard-2-22m",
+          "limits": {},
+          "intelligence_score": null
+        },
+        {
+          "id": "meta-llama/llama-prompt-guard-2-86m",
+          "name": "meta-llama/llama-prompt-guard-2-86m",
+          "limits": {},
+          "intelligence_score": null
+        },
+        {
+          "id": "openai/gpt-oss-120b",
+          "name": "openai/gpt-oss-120b",
+          "limits": {
+            "requests/day": 1000,
+            "tokens/minute": 8000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "openai/gpt-oss-20b",
+          "name": "openai/gpt-oss-20b",
+          "limits": {
+            "requests/day": 1000,
+            "tokens/minute": 8000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "openai/gpt-oss-safeguard-20b",
+          "name": "openai/gpt-oss-safeguard-20b",
+          "limits": {
+            "requests/day": 1000,
+            "tokens/minute": 8000
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "qwen/qwen3.6-27b",
+          "name": "qwen/qwen3.6-27b",
+          "limits": {
+            "requests/day": 1000,
+            "tokens/minute": 8000
+          },
+          "intelligence_score": null
+        }
+      ]
     }
   }
 }
