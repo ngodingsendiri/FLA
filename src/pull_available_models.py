@@ -195,12 +195,13 @@ Ubah src/README_template.md atau skrip generator-nya.
             continue
         providers_json[key] = {
             "tier":   cfg.get("tier", "free"),
+            "website": cfg.get("website", ""),
             "models": inject_scores(results.get(key, [])),
         }
 
     # Custom providers
-    providers_json["gemini"] = {"tier": "free",  "models": inject_scores(gemini_text_models)}
-    providers_json["groq"]   = {"tier": "free",  "models": inject_scores(results.get("groq", []))}
+    providers_json["gemini"] = {"tier": "free",  "website": "https://aistudio.google.com/app/apikey", "models": inject_scores(gemini_text_models)}
+    providers_json["groq"]   = {"tier": "free",  "website": "https://console.groq.com/keys", "models": inject_scores(results.get("groq", []))}
 
     models_json: dict = {
         "generated_at": __import__("datetime").datetime.now(

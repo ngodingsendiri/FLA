@@ -27,6 +27,7 @@ providers:
   openrouter:
     display_name: OpenRouter
     tier: free
+    website: "https://openrouter.ai/settings/keys"
     url: "https://openrouter.ai/api/v1/models"
     data_path: data
     id_field: id
@@ -39,6 +40,7 @@ providers:
   sambanova:
     display_name: SambaNova
     tier: free
+    website: "https://cloud.sambanova.ai/apis"
     url: "https://api.sambanova.ai/v1/models"
     data_path: data
     id_field: id
@@ -46,6 +48,7 @@ providers:
   kilo:
     display_name: Kilo
     tier: free
+    website: "https://kilo.ai/dashboard"
     url: "https://api.kilo.ai/api/gateway/models"
     data_path: data
     id_field: id
@@ -57,6 +60,7 @@ providers:
   scaleway:
     display_name: Scaleway
     tier: trial
+    website: "https://console.scaleway.com/iam/api-keys"
     url: "https://api.scaleway.ai/v1/models"
     auth_env: SCALEWAY_API_KEY
     auth_type: bearer
@@ -66,6 +70,7 @@ providers:
   hyperbolic:
     display_name: Hyperbolic
     tier: trial
+    website: "https://app.hyperbolic.xyz/settings"
     url: "https://api.hyperbolic.xyz/v1/models"
     auth_env: HYPERBOLIC_API_KEY
     auth_type: bearer
@@ -79,6 +84,7 @@ providers:
   cloudflare:
     display_name: Cloudflare
     tier: free
+    website: "https://dash.cloudflare.com/profile/api-tokens"
     url: "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/models/search?search=Text+Generation"
     url_env_vars:
       - CLOUDFLARE_ACCOUNT_ID
@@ -90,6 +96,7 @@ providers:
   cohere:
     display_name: Cohere
     tier: free
+    website: "https://dashboard.cohere.com/api-keys"
     url: "https://api.cohere.com/v1/models"
     auth_env: COHERE_API_KEY
     auth_type: bearer

@@ -16,7 +16,8 @@
     let maxScore      = 0;     // global max intelligence score (for bar scale)
 
     // ── Fetch ───────────────────────────────────────────────────────────────
-    fetch('api/models.json')
+    // Menggunakan parameter cache-buster agar selalu mendapat data terbaru dari GitHub Pages
+    fetch('api/models.json?t=' + Date.now())
         .then(r => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return r.json();
@@ -115,7 +116,7 @@
             if (filtered.length === 0) continue;
             totalShown += filtered.length;
 
-            fragment.appendChild(buildProviderSection(key, provData.tier, filtered));
+            fragment.appendChild(buildProviderSection(key, provData.tier, filtered, provData.website));
         }
 
         modelsContainer.innerHTML = '';
@@ -133,17 +134,26 @@
         }
     }
 
-    function buildProviderSection(key, tier, models) {
+    function buildProviderSection(key, tier, models, website) {
         const section = document.createElement('div');
         section.className = 'provider-section';
 
         // Header
         const header = document.createElement('div');
         header.className = 'provider-header';
+        
+        let websiteBtn = '';
+        if (website) {
+            websiteBtn = `<a href="${escAttr(website)}" target="_blank" rel="noopener noreferrer" class="provider-action-btn">🔑 Get API Key</a>`;
+        }
+
         header.innerHTML = `
-            <h2 class="provider-name">${capitalize(key)}</h2>
-            <span class="tier-badge">${tier} tier</span>
-            <span class="provider-model-count">${models.length} model${models.length !== 1 ? 's' : ''}</span>
+            <div class="provider-header-left">
+                <h2 class="provider-name">${capitalize(key)}</h2>
+                <span class="tier-badge">${tier} tier</span>
+                <span class="provider-model-count">${models.length} model${models.length !== 1 ? 's' : ''}</span>
+            </div>
+            ${websiteBtn}
         `;
         section.appendChild(header);
 
