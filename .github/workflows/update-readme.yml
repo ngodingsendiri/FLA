@@ -26,6 +26,7 @@ jobs:
 
       # Auth GCP opsional (isi secret GCP_* di repo Settings jika mau limit Gemini live)
       - id: auth
+        if: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
         continue-on-error: true
         uses: google-github-actions/auth@v3
         with:
@@ -49,14 +50,9 @@ jobs:
         if: always() && steps.auth.outcome == 'success'
         run: rm -f "${{ steps.auth.outputs.credentials_file_path }}"
 
-      - name: Buat Pull Request
-        uses: peter-evans/create-pull-request@v8
+      - name: Auto-Commit perubahan ke main
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          title: "chore: perbarui daftar model FLA"
-          body: |
-            PR otomatis: memperbarui README dengan model/limit terbaru.
-
-            Di-generate oleh `src/pull_available_models.py`.
-          branch: update-readme
-          base: main
-          commit-message: "chore: perbarui daftar model FLA"
+          commit_message: "chore: perbarui daftar model FLA otomatis"
+          branch: main
+          file_pattern: 'README.md api/models.json'
