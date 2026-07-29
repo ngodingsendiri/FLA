@@ -4,7 +4,6 @@ import re
 from pathlib import Path
 
 import requests
-import requests_cache
 import yaml
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -18,9 +17,12 @@ _REPO_ROOT = _SRC_DIR.parent
 def _load_model_mapping() -> dict[str, str]:
     """Baca mapping model → nama dari config/models.yaml."""
     yaml_path = _CONFIG_DIR / "models.yaml"
-    with open(yaml_path, encoding="utf-8") as f:
-        data = yaml.safe_load(f)
-    return data.get("model_to_name", {})
+    try:
+        with open(yaml_path, encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        return data.get("model_to_name", {}) if data else {}
+    except Exception:
+        return {}
 
 MODEL_TO_NAME_MAPPING: dict[str, str] = _load_model_mapping()
 
@@ -53,6 +55,8 @@ def env_ready(*keys: str) -> bool:
 def get_session() -> requests.Session:
     """Mengembalikan requests.Session dengan konfigurasi retry otomatis, atau CachedSession jika FLA_USE_CACHE=1."""
     if os.environ.get("FLA_USE_CACHE") == "1":
+        import requests_cache
+
         cache_path = str(_REPO_ROOT / ".cache")
         session = requests_cache.CachedSession(
             cache_path,

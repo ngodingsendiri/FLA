@@ -163,7 +163,7 @@ Ubah src/README_template.md atau skrip generator-nya.
     api_dir.mkdir(exist_ok=True)
 
     models_json: dict = {
-        "generated_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+        "generated_at": __import__("datetime").datetime.now(__import__("datetime").UTC).isoformat().replace("+00:00", "Z"),
         "providers": {
             "openrouter":  {"tier": "free",  "models": results.get("openrouter", [])},
             "gemini":      {"tier": "free",  "models": gemini_text_models},
