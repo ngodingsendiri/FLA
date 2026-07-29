@@ -177,8 +177,8 @@ Ubah src/README_template.md atau skrip generator-nya.
     def inject_scores(models: list[dict]) -> list[dict]:
         """Tambahkan intelligence_score ke setiap model, lalu sort DESC."""
         for m in models:
-            name_lower = m.get("name", "").lower()
-            id_lower   = m.get("id", "").lower()
+            name_lower = (m.get("name") or "").lower()
+            id_lower   = (m.get("id") or "").lower()
             score = intelligence_scores.get(name_lower) or intelligence_scores.get(id_lower)
             m["intelligence_score"] = score
         return sorted(
