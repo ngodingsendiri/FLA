@@ -281,7 +281,39 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 
 
-_Daftar model Groq tidak di-fetch (butuh `GROQ_API_KEY`)._
+<table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>
+
+<tr><td>Allam 2 7B</td><td>7.000 req/hari<br>6.000 token/menit</td></tr>
+
+<tr><td>Llama 3.1 8B</td><td>14.400 req/hari<br>6.000 token/menit</td></tr>
+
+<tr><td>Llama 3.3 70B</td><td>1.000 req/hari<br>12.000 token/menit</td></tr>
+
+<tr><td>Whisper Large v3</td><td>2.000 req/hari</td></tr>
+
+<tr><td>Whisper Large v3 Turbo</td><td>2.000 req/hari</td></tr>
+
+<tr><td>canopylabs/orpheus-arabic-saudi</td><td>—</td></tr>
+
+<tr><td>canopylabs/orpheus-v1-english</td><td>—</td></tr>
+
+<tr><td>groq/compound</td><td>250 req/hari<br>70.000 token/menit</td></tr>
+
+<tr><td>groq/compound-mini</td><td>250 req/hari<br>70.000 token/menit</td></tr>
+
+<tr><td>meta-llama/llama-prompt-guard-2-22m</td><td>—</td></tr>
+
+<tr><td>meta-llama/llama-prompt-guard-2-86m</td><td>—</td></tr>
+
+<tr><td>openai/gpt-oss-120b</td><td>1.000 req/hari<br>8.000 token/menit</td></tr>
+
+<tr><td>openai/gpt-oss-20b</td><td>1.000 req/hari<br>8.000 token/menit</td></tr>
+
+<tr><td>openai/gpt-oss-safeguard-20b</td><td>1.000 req/hari<br>8.000 token/menit</td></tr>
+
+<tr><td>qwen/qwen3.6-27b</td><td>1.000 req/hari<br>8.000 token/menit</td></tr>
+
+</tbody></table>
 
 
 ### [Cohere](https://cohere.com)
@@ -292,7 +324,31 @@ _Daftar model Groq tidak di-fetch (butuh `GROQ_API_KEY`)._
 
 
 
-_Daftar model tidak di-fetch (butuh `COHERE_API_KEY`)._
+**Model chat:**
+
+
+- c4ai-aya-expanse-32b
+
+- c4ai-aya-vision-32b
+
+- command-a-03-2025
+
+- command-a-plus-05-2026
+
+- command-a-reasoning-08-2025
+
+- command-a-translate-08-2025
+
+- command-a-vision-07-2025
+
+- command-r-08-2024
+
+- command-r-plus-08-2024
+
+- command-r7b-12-2024
+
+- command-r7b-arabic-02-2025
+
 
 
 ### [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai)
@@ -408,8 +464,18 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
 > **Jenis:** 🟡 Trial
 > **Batas:** Kredit ~$1
-> **Catatan:** Daftar model tidak di-fetch (butuh `HYPERBOLIC_API_KEY`).
 
+
+**Model:**
+
+
+- DeepSeek V3 0324
+
+- Llama 3.3 70B Instruct
+
+- Qwen/Qwen3-Coder-480B-A35B-Instruct
+
+- deepseek-ai/DeepSeek-R1-0528
 
 
 
@@ -442,8 +508,46 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
 > **Jenis:** 🟡 Trial
 > **Batas:** 1.000.000 token gratis + 60 menit transkripsi audio
-> **Catatan:** Daftar model tidak di-fetch (butuh `SCALEWAY_API_KEY`).
 
+
+**Model:**
+
+
+- BGE-Multilingual-Gemma2
+
+- Gemma 3 27B Instruct
+
+- Llama 3.3 70B Instruct
+
+- OpenAI GPT-OSS 120B
+
+- Pixtral 12B (2409)
+
+- Whisper Large v3
+
+- devstral-2-123b-instruct-2512
+
+- gemma-4-26b-a4b-it
+
+- glm-5.2
+
+- holo2-30b-a3b
+
+- mistral-medium-3.5-128b
+
+- mistral-small-3.2-24b-instruct-2506
+
+- qwen3-235b-a22b-instruct-2507
+
+- qwen3-coder-30b-a3b-instruct
+
+- qwen3-embedding-8b
+
+- qwen3.5-397b-a17b
+
+- qwen3.6-35b-a3b
+
+- voxtral-small-24b-2507
 
 
 
