@@ -293,3 +293,41 @@ def fetch_kilo_models(logger) -> list[dict]:
         ],
         key=lambda x: x["name"],
     )
+
+
+# ── Artificial Analysis (Intelligence Scores) ──────────────────────────────
+def fetch_intelligence_scores(logger) -> dict[str, float]:
+    """
+    Mengambil skor Intelligence Index dari Artificial Analysis API.
+    Return: dict {model_name_lower: intelligence_score}
+    API key diambil dari env var ARTIFICIAL_ANALYSIS_API_KEY.
+    """
+    api_key = os.environ.get("ARTIFICIAL_ANALYSIS_API_KEY", "")
+    if not api_key:
+        logger.warning("Lewati Artificial Analysis: env belum lengkap (ARTIFICIAL_ANALYSIS_API_KEY)")
+        return {}
+
+    logger.info("Fetching Intelligence scores dari Artificial Analysis...")
+    try:
+        r = session.get(
+            "https://artificialanalysis.ai/api/v2/language/models",
+            headers={"x-api-key": api_key},
+            timeout=20,
+        )
+        r.raise_for_status()
+        scores: dict[str, float] = {}
+        for model in r.json().get("data", []):
+            name = model.get("name", "")
+            score = model.get("intelligence", {})
+            if isinstance(score, dict):
+                score = score.get("score") or score.get("value") or score.get("index")
+            if name and score is not None:
+                try:
+                    scores[name.lower()] = float(score)
+                except (TypeError, ValueError):
+                    pass
+        logger.info(f"Artificial Analysis: {len(scores)} skor berhasil dimuat.")
+        return scores
+    except Exception as exc:
+        logger.exception(f"Gagal fetch Artificial Analysis: {exc}")
+        return {}

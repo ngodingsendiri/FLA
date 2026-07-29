@@ -18,6 +18,7 @@ from fetchers import (
     fetch_gemini_limits,
     fetch_groq_models,
     fetch_hyperbolic_models,
+    fetch_intelligence_scores,
     fetch_kilo_models,
     fetch_openrouter_models,
     fetch_samba_models,
@@ -81,6 +82,7 @@ def main() -> None:
         "cohere":     create_logger("Cohere"),
         "kilo":       create_logger("Kilo"),
         "groq":       create_logger("Groq"),
+        "aa":         create_logger("Artificial Analysis"),
     }
 
     def fetch_gemini():
@@ -119,6 +121,14 @@ def main() -> None:
                 results[key] = data
             except Exception as exc:
                 logger.exception(f"Task '{task_name}' generated an exception: {exc}")
+
+    # ── Fetch Intelligence Scores (serial, setelah semua fetch selesai) ────
+    intelligence_scores = safe_fetch(
+        "Artificial Analysis",
+        fetch_intelligence_scores,
+        loggers["aa"],
+        default={},
+    )
 
     # ── Build template variables ───────────────────────────────────────────
     gemini_text_models = _build_gemini_models(results.get("gemini", {}))
@@ -162,18 +172,29 @@ Ubah src/README_template.md atau skrip generator-nya.
     api_dir = _REPO_ROOT / "api"
     api_dir.mkdir(exist_ok=True)
 
+    # ── Inject intelligence scores & sort by score ────────────────────────
+    def inject_scores(models: list[dict]) -> list[dict]:
+        """Tambahkan intelligence_score ke setiap model, lalu sort DESC."""
+        for m in models:
+            name_lower = m.get("name", "").lower()
+            id_lower = m.get("id", "").lower()
+            score = intelligence_scores.get(name_lower) or intelligence_scores.get(id_lower)
+            m["intelligence_score"] = score
+        # Model dengan skor tampil dulu (desc), sisanya di belakang
+        return sorted(models, key=lambda x: (x["intelligence_score"] is None, -(x["intelligence_score"] or 0)))
+
     models_json: dict = {
         "generated_at": __import__("datetime").datetime.now(__import__("datetime").UTC).isoformat().replace("+00:00", "Z"),
         "providers": {
-            "openrouter":  {"tier": "free",  "models": results.get("openrouter", [])},
-            "gemini":      {"tier": "free",  "models": gemini_text_models},
-            "groq":        {"tier": "free",  "models": results.get("groq", [])},
-            "cohere":      {"tier": "free",  "models": results.get("cohere", [])},
-            "kilo":        {"tier": "free",  "models": results.get("kilo", [])},
-            "cloudflare":  {"tier": "free",  "models": results.get("cloudflare", [])},
-            "hyperbolic":  {"tier": "trial", "models": results.get("hyperbolic", [])},
-            "sambanova":   {"tier": "trial", "models": results.get("samba", [])},
-            "scaleway":    {"tier": "trial", "models": results.get("scaleway", [])},
+            "openrouter":  {"tier": "free",  "models": inject_scores(results.get("openrouter", []))},
+            "gemini":      {"tier": "free",  "models": inject_scores(gemini_text_models)},
+            "groq":        {"tier": "free",  "models": inject_scores(results.get("groq", []))},
+            "cohere":      {"tier": "free",  "models": inject_scores(results.get("cohere", []))},
+            "kilo":        {"tier": "free",  "models": inject_scores(results.get("kilo", []))},
+            "cloudflare":  {"tier": "free",  "models": inject_scores(results.get("cloudflare", []))},
+            "hyperbolic":  {"tier": "trial", "models": inject_scores(results.get("hyperbolic", []))},
+            "sambanova":   {"tier": "trial", "models": inject_scores(results.get("samba", []))},
+            "scaleway":    {"tier": "trial", "models": inject_scores(results.get("scaleway", []))},
         },
     }
 

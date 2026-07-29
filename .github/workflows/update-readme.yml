@@ -42,6 +42,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
           SCALEWAY_API_KEY: ${{ secrets.SCALEWAY_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          ARTIFICIAL_ANALYSIS_API_KEY: ${{ secrets.ARTIFICIAL_ANALYSIS_API_KEY }}
         run: python -u src/pull_available_models.py
 
       - name: Hapus kredensial GCP
