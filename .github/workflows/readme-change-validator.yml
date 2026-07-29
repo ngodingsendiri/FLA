@@ -5,7 +5,7 @@ on:
     paths:
       - "README.md"
       - "src/README_template.md"
-      - "src/pull_available_models.py"
+      - "src/**/*.py"
 
 permissions:
   issues: write
@@ -26,7 +26,7 @@ jobs:
         run: |
           README_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -c "README.md" || true)
           TEMPLATE_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -c "src/README_template.md" || true)
-          SCRIPT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -c "src/pull_available_models.py" || true)
+          SCRIPT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -c "src/.*\.py" || true)
 
           echo "readme_changed=$README_CHANGED" >> $GITHUB_OUTPUT
           echo "template_changed=$TEMPLATE_CHANGED" >> $GITHUB_OUTPUT
@@ -38,7 +38,7 @@ jobs:
              [ "${{ steps.changed-files.outputs.template_changed }}" -eq 0 ] && \
              [ "${{ steps.changed-files.outputs.script_changed }}" -eq 0 ]; then
             echo "Error: README.md diubah tanpa menyentuh template/skrip generator."
-            echo "Edit src/README_template.md atau src/pull_available_models.py, lalu generate ulang."
+            echo "Edit src/README_template.md atau file Python di src/, lalu generate ulang."
             exit 1
           fi
 
@@ -52,5 +52,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '❌ `README.md` diubah langsung tanpa update `src/README_template.md` atau `src/pull_available_models.py`.\n\nFLA generate README otomatis — edit template/skrip, jangan README mentah.'
+              body: '❌ `README.md` diubah langsung tanpa update `src/README_template.md` atau skrip Python di `src/`.\n\nFLA generate README otomatis — edit template/skrip, jangan README mentah.'
             })

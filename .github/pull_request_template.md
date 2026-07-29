@@ -10,7 +10,7 @@ Sebelum menambah provider baru, cek dulu:
 ### Cara kontribusi teknis
 
 - Jangan edit `README.md` langsung.
-- Ubah `src/README_template.md` (teks/struktur) dan/atau `src/pull_available_models.py` (fetch + konten provider).
+- Ubah `src/README_template.md` (teks/struktur) dan tambahkan skrip API provider baru di `src/fetchers.py`.
 - Generate ulang: `python -u src/pull_available_models.py`
 
 ### Catatan

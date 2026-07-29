@@ -1,0 +1,378 @@
+{
+  "generated_at": "2026-07-29T04:53:59.841836Z",
+  "providers": {
+    "openrouter": {
+      "tier": "free",
+      "models": [
+        {
+          "id": "cohere/north-mini-code:free",
+          "name": "Cohere North Mini Code",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "google/gemma-4-26b-a4b-it:free",
+          "name": "Gemma 4 26B A4B Instruct",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "google/gemma-4-31b-it:free",
+          "name": "Gemma 4 31B Instruct",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "inclusionai/ling-3.0-flash:free",
+          "name": "Ling 3.0 Flash",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-3-nano-30b-a3b:free",
+          "name": "NVIDIA Nemotron 3 Nano 30B A3B",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "name": "NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "name": "NVIDIA Nemotron 3 Super 120B A12B",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "name": "NVIDIA Nemotron 3 Ultra 550B A55B",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-3.5-content-safety:free",
+          "name": "NVIDIA Nemotron 3.5 Content Safety",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-nano-12b-v2-vl:free",
+          "name": "NVIDIA Nemotron Nano 12B v2 VL",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "nvidia/nemotron-nano-9b-v2:free",
+          "name": "NVIDIA Nemotron Nano 9B v2",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "openai/gpt-oss-20b:free",
+          "name": "OpenAI GPT-OSS 20B",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "poolside/laguna-s-2.1:free",
+          "name": "Poolside Laguna S 2.1",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        },
+        {
+          "id": "poolside/laguna-xs-2.1:free",
+          "name": "Poolside Laguna XS 2.1",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          }
+        }
+      ]
+    },
+    "gemini": {
+      "tier": "free",
+      "models": [
+        {
+          "id": "gemini-3.6-flash",
+          "name": "Gemini 3.6 Flash",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 5
+          }
+        },
+        {
+          "id": "gemini-3.5-flash",
+          "name": "Gemini 3.5 Flash",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 5
+          }
+        },
+        {
+          "id": "gemini-3-flash-preview",
+          "name": "Gemini 3 Flash",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 5
+          }
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "name": "Gemini 3.5 Flash-Lite",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 500,
+            "requests/minute": 15
+          }
+        },
+        {
+          "id": "gemini-3.1-flash-lite",
+          "name": "Gemini 3.1 Flash-Lite",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 500,
+            "requests/minute": 15
+          }
+        },
+        {
+          "id": "gemini-2.5-flash",
+          "name": "Gemini 2.5 Flash",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 5
+          }
+        },
+        {
+          "id": "gemini-2.5-flash-lite",
+          "name": "Gemini 2.5 Flash-Lite",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 10
+          }
+        },
+        {
+          "id": "gemini-3.1-flash-tts-preview",
+          "name": "Gemini 3.1 Flash TTS",
+          "limits": {
+            "tokens/minute": 10000,
+            "requests/day": 10,
+            "requests/minute": 3
+          }
+        },
+        {
+          "id": "gemini-2.5-flash-preview-tts",
+          "name": "Gemini 2.5 Flash TTS",
+          "limits": {
+            "tokens/minute": 10000,
+            "requests/day": 10,
+            "requests/minute": 3
+          }
+        },
+        {
+          "id": "gemini-robotics-er-1.6-preview",
+          "name": "Gemini Robotics-ER 1.6",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 5
+          }
+        },
+        {
+          "id": "gemini-robotics-er-1.5-preview",
+          "name": "Gemini Robotics-ER 1.5",
+          "limits": {
+            "tokens/minute": 250000,
+            "requests/day": 20,
+            "requests/minute": 10
+          }
+        },
+        {
+          "id": "gemma-4-31b-it",
+          "name": "Gemma 4 31B Instruct",
+          "limits": {
+            "tokens/minute": 16000,
+            "requests/day": 14400,
+            "requests/minute": 30
+          }
+        },
+        {
+          "id": "gemma-4-26b-a4b-it",
+          "name": "Gemma 4 26B A4B Instruct",
+          "limits": {
+            "tokens/minute": 16000,
+            "requests/day": 14400,
+            "requests/minute": 30
+          }
+        },
+        {
+          "id": "gemma-3-27b-it",
+          "name": "Gemma 3 27B Instruct",
+          "limits": {
+            "tokens/minute": 15000,
+            "requests/day": 14400,
+            "requests/minute": 30
+          }
+        },
+        {
+          "id": "gemma-3-12b-it",
+          "name": "Gemma 3 12B Instruct",
+          "limits": {
+            "tokens/minute": 15000,
+            "requests/day": 14400,
+            "requests/minute": 30
+          }
+        },
+        {
+          "id": "gemma-3-4b-it",
+          "name": "Gemma 3 4B Instruct",
+          "limits": {
+            "tokens/minute": 15000,
+            "requests/day": 14400,
+            "requests/minute": 30
+          }
+        },
+        {
+          "id": "gemma-3-1b-it",
+          "name": "Gemma 3 1B Instruct",
+          "limits": {
+            "tokens/minute": 15000,
+            "requests/day": 14400,
+            "requests/minute": 30
+          }
+        }
+      ]
+    },
+    "groq": {
+      "tier": "free",
+      "models": []
+    },
+    "cohere": {
+      "tier": "free",
+      "models": []
+    },
+    "kilo": {
+      "tier": "free",
+      "models": [
+        {
+          "id": "cohere/north-mini-code:free",
+          "name": "Cohere North Mini Code"
+        },
+        {
+          "id": "kilo-auto/free",
+          "name": "Kilo Auto Free (Router)"
+        },
+        {
+          "id": "inclusionai/ling-3.0-flash:free",
+          "name": "Ling 3.0 Flash"
+        },
+        {
+          "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "name": "NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)"
+        },
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "name": "NVIDIA Nemotron 3 Super 120B A12B"
+        },
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "name": "NVIDIA Nemotron 3 Ultra 550B A55B"
+        },
+        {
+          "id": "nvidia/nemotron-3.5-content-safety:free",
+          "name": "NVIDIA Nemotron 3.5 Content Safety"
+        },
+        {
+          "id": "openrouter/free",
+          "name": "OpenRouter Free Models (Router)"
+        },
+        {
+          "id": "poolside/laguna-s-2.1:free",
+          "name": "Poolside Laguna S 2.1"
+        },
+        {
+          "id": "poolside/laguna-xs-2.1:free",
+          "name": "Poolside Laguna XS 2.1"
+        },
+        {
+          "id": "stepfun/step-3.7-flash:free",
+          "name": "StepFun Step 3.7 Flash"
+        }
+      ]
+    },
+    "cloudflare": {
+      "tier": "free",
+      "models": []
+    },
+    "hyperbolic": {
+      "tier": "trial",
+      "models": []
+    },
+    "sambanova": {
+      "tier": "trial",
+      "models": [
+        {
+          "id": "DeepSeek-V3.1",
+          "name": "DeepSeek V3.1"
+        },
+        {
+          "id": "DeepSeek-V3.2",
+          "name": "DeepSeek V3.2"
+        },
+        {
+          "id": "gemma-4-31B-it",
+          "name": "Gemma 4 31B Instruct"
+        },
+        {
+          "id": "Meta-Llama-3.3-70B-Instruct",
+          "name": "Llama 3.3 70B Instruct"
+        },
+        {
+          "id": "MiniMax-M2.7",
+          "name": "MiniMax M2.7"
+        },
+        {
+          "id": "gpt-oss-120b",
+          "name": "OpenAI GPT-OSS 120B"
+        }
+      ]
+    },
+    "scaleway": {
+      "tier": "trial",
+      "models": []
+    }
+  }
+}
