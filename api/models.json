@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-07-29T06:49:59.796771Z",
+  "generated_at": "2026-07-29T11:16:28.563208Z",
   "providers": {
     "openrouter": {
       "tier": "free",
+      "website": "https://openrouter.ai/settings/keys",
       "models": [
         {
           "id": "cohere/north-mini-code:free",
@@ -134,6 +135,7 @@
     },
     "sambanova": {
       "tier": "free",
+      "website": "https://cloud.sambanova.ai/apis",
       "models": [
         {
           "id": "DeepSeek-V3.1",
@@ -169,6 +171,7 @@
     },
     "kilo": {
       "tier": "free",
+      "website": "https://kilo.ai/dashboard",
       "models": [
         {
           "id": "cohere/north-mini-code:free",
@@ -229,6 +232,7 @@
     },
     "scaleway": {
       "tier": "trial",
+      "website": "https://console.scaleway.com/iam/api-keys",
       "models": [
         {
           "id": "bge-multilingual-gemma2",
@@ -324,6 +328,7 @@
     },
     "hyperbolic": {
       "tier": "trial",
+      "website": "https://app.hyperbolic.xyz/settings",
       "models": [
         {
           "id": "deepseek-ai/DeepSeek-V3-0324",
@@ -361,10 +366,12 @@
     },
     "cloudflare": {
       "tier": "free",
+      "website": "https://dash.cloudflare.com/profile/api-tokens",
       "models": []
     },
     "cohere": {
       "tier": "free",
+      "website": "https://dashboard.cohere.com/api-keys",
       "models": [
         {
           "id": "c4ai-aya-expanse-32b",
@@ -425,6 +432,7 @@
     },
     "gemini": {
       "tier": "free",
+      "website": "https://aistudio.google.com/app/apikey",
       "models": [
         {
           "id": "gemini-3.6-flash",
@@ -600,6 +608,7 @@
     },
     "groq": {
       "tier": "free",
+      "website": "https://console.groq.com/keys",
       "models": [
         {
           "id": "allam-2-7b",
