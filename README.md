@@ -236,6 +236,8 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - StepFun Step 3.7 Flash
 
+- tencent/hy3:free
+
 
 
 ### [OpenCode Zen](https://opencode.ai/docs/zen/)
@@ -515,8 +517,6 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
 - BGE-Multilingual-Gemma2
 
-- Gemma 3 27B Instruct
-
 - Llama 3.3 70B Instruct
 
 - OpenAI GPT-OSS 120B
@@ -524,8 +524,6 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 - Pixtral 12B (2409)
 
 - Whisper Large v3
-
-- devstral-2-123b-instruct-2512
 
 - gemma-4-26b-a4b-it
 
@@ -546,8 +544,6 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 - qwen3.5-397b-a17b
 
 - qwen3.6-35b-a3b
-
-- voxtral-small-24b-2507
 
 
 
