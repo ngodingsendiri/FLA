@@ -90,8 +90,6 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - [Gemma 4 31B Instruct](https://openrouter.ai/google/gemma-4-31b-it:free)
 
-- [Ling 3.0 Flash](https://openrouter.ai/inclusionai/ling-3.0-flash:free)
-
 - [NVIDIA Nemotron 3 Nano 30B A3B](https://openrouter.ai/nvidia/nemotron-3-nano-30b-a3b:free)
 
 - [NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)](https://openrouter.ai/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free)
@@ -111,6 +109,8 @@ Ubah src/README_template.md atau skrip generator-nya.
 - [Poolside Laguna S 2.1](https://openrouter.ai/poolside/laguna-s-2.1:free)
 
 - [Poolside Laguna XS 2.1](https://openrouter.ai/poolside/laguna-xs-2.1:free)
+
+- [inclusionai/ling-3.0-tiny:free](https://openrouter.ai/inclusionai/ling-3.0-tiny:free)
 
 
 
@@ -218,8 +218,6 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - Kilo Auto Free (Router)
 
-- Ling 3.0 Flash
-
 - NVIDIA Nemotron 3 Nano Omni 30B A3B (Reasoning)
 
 - NVIDIA Nemotron 3 Super 120B A12B
@@ -235,6 +233,8 @@ Ubah src/README_template.md atau skrip generator-nya.
 - Poolside Laguna XS 2.1
 
 - StepFun Step 3.7 Flash
+
+- inclusionai/ling-3.0-tiny:free
 
 - tencent/hy3:free
 
