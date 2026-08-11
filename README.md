@@ -529,8 +529,6 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
 - glm-5.2
 
-- holo2-30b-a3b
-
 - mistral-medium-3.5-128b
 
 - mistral-small-3.2-24b-instruct-2506
