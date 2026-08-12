@@ -112,6 +112,10 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - [inclusionai/ling-3.0-tiny:free](https://openrouter.ai/inclusionai/ling-3.0-tiny:free)
 
+- [liquid/lfm-2.5-2.6b:free](https://openrouter.ai/liquid/lfm-2.5-2.6b:free)
+
+- [nvidia/nemotron-3.5-lightning:free](https://openrouter.ai/nvidia/nemotron-3.5-lightning:free)
+
 
 
 ### [Google AI Studio](https://aistudio.google.com)
@@ -235,6 +239,10 @@ Ubah src/README_template.md atau skrip generator-nya.
 - StepFun Step 3.7 Flash
 
 - inclusionai/ling-3.0-tiny:free
+
+- liquid/lfm-2.5-2.6b:free
+
+- nvidia/nemotron-3.5-lightning:free
 
 - tencent/hy3:free
 
@@ -524,6 +532,8 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 - Pixtral 12B (2409)
 
 - Whisper Large v3
+
+- deepseek-v4-flash-0731
 
 - gemma-4-26b-a4b-it
 

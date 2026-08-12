@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T02:00:24.134385Z",
+  "generated_at": "2026-08-12T02:13:46.676244Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -130,6 +130,24 @@
             "requests/day": 50
           },
           "intelligence_score": null
+        },
+        {
+          "id": "liquid/lfm-2.5-2.6b:free",
+          "name": "liquid/lfm-2.5-2.6b:free",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "nvidia/nemotron-3.5-lightning:free",
+          "name": "nvidia/nemotron-3.5-lightning:free",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          },
+          "intelligence_score": null
         }
       ]
     },
@@ -229,6 +247,16 @@
           "intelligence_score": null
         },
         {
+          "id": "liquid/lfm-2.5-2.6b:free",
+          "name": "liquid/lfm-2.5-2.6b:free",
+          "intelligence_score": null
+        },
+        {
+          "id": "nvidia/nemotron-3.5-lightning:free",
+          "name": "nvidia/nemotron-3.5-lightning:free",
+          "intelligence_score": null
+        },
+        {
           "id": "tencent/hy3:free",
           "name": "tencent/hy3:free",
           "intelligence_score": null
@@ -262,6 +290,11 @@
         {
           "id": "whisper-large-v3",
           "name": "Whisper Large v3",
+          "intelligence_score": null
+        },
+        {
+          "id": "deepseek-v4-flash-0731",
+          "name": "deepseek-v4-flash-0731",
           "intelligence_score": null
         },
         {
