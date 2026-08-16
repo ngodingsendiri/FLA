@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-15T01:25:12.199756Z",
+  "generated_at": "2026-08-16T01:37:13.535880Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -123,6 +123,15 @@
           "intelligence_score": null
         },
         {
+          "id": "dots-studio/dots-3-note-preview:free",
+          "name": "dots-studio/dots-3-note-preview:free",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          },
+          "intelligence_score": null
+        },
+        {
           "id": "liquid/lfm-2.5-2.6b:free",
           "name": "liquid/lfm-2.5-2.6b:free",
           "limits": {
@@ -230,6 +239,11 @@
         {
           "id": "stepfun/step-3.7-flash:free",
           "name": "StepFun Step 3.7 Flash",
+          "intelligence_score": null
+        },
+        {
+          "id": "dots-studio/dots-3-note-preview:free",
+          "name": "dots-studio/dots-3-note-preview:free",
           "intelligence_score": null
         },
         {
