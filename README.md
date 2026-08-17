@@ -116,6 +116,8 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - [nvidia/nemotron-3.5-lightning:free](https://openrouter.ai/nvidia/nemotron-3.5-lightning:free)
 
+- [z-ai/glm-5.2:free](https://openrouter.ai/z-ai/glm-5.2:free)
+
 
 
 ### [Google AI Studio](https://aistudio.google.com)
@@ -245,6 +247,8 @@ Ubah src/README_template.md atau skrip generator-nya.
 - nvidia/nemotron-3.5-lightning:free
 
 - tencent/hy3:free
+
+- z-ai/glm-5.2:free
 
 
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-16T01:37:13.535880Z",
+  "generated_at": "2026-08-17T01:28:25.204720Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -148,6 +148,15 @@
             "requests/day": 50
           },
           "intelligence_score": null
+        },
+        {
+          "id": "z-ai/glm-5.2:free",
+          "name": "z-ai/glm-5.2:free",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          },
+          "intelligence_score": null
         }
       ]
     },
@@ -259,6 +268,11 @@
         {
           "id": "tencent/hy3:free",
           "name": "tencent/hy3:free",
+          "intelligence_score": null
+        },
+        {
+          "id": "z-ai/glm-5.2:free",
+          "name": "z-ai/glm-5.2:free",
           "intelligence_score": null
         }
       ]
