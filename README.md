@@ -242,8 +242,6 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - dots-studio/dots-3-note-preview:free
 
-- liquid/lfm-2.5-2.6b:free
-
 - nvidia/nemotron-3.5-lightning:free
 
 - tencent/hy3:free
@@ -298,10 +296,6 @@ Ubah src/README_template.md atau skrip generator-nya.
 <table><thead><tr><th>Model</th><th>Batas</th></tr></thead><tbody>
 
 <tr><td>Allam 2 7B</td><td>7.000 req/hari<br>6.000 token/menit</td></tr>
-
-<tr><td>Llama 3.1 8B</td><td>14.400 req/hari<br>6.000 token/menit</td></tr>
-
-<tr><td>Llama 3.3 70B</td><td>1.000 req/hari<br>12.000 token/menit</td></tr>
 
 <tr><td>Whisper Large v3</td><td>2.000 req/hari</td></tr>
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T01:28:25.204720Z",
+  "generated_at": "2026-08-18T01:24:31.825559Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -253,11 +253,6 @@
         {
           "id": "dots-studio/dots-3-note-preview:free",
           "name": "dots-studio/dots-3-note-preview:free",
-          "intelligence_score": null
-        },
-        {
-          "id": "liquid/lfm-2.5-2.6b:free",
-          "name": "liquid/lfm-2.5-2.6b:free",
           "intelligence_score": null
         },
         {
@@ -648,24 +643,6 @@
           "limits": {
             "requests/day": 7000,
             "tokens/minute": 6000
-          },
-          "intelligence_score": null
-        },
-        {
-          "id": "llama-3.1-8b-instant",
-          "name": "Llama 3.1 8B",
-          "limits": {
-            "requests/day": 14400,
-            "tokens/minute": 6000
-          },
-          "intelligence_score": null
-        },
-        {
-          "id": "llama-3.3-70b-versatile",
-          "name": "Llama 3.3 70B",
-          "limits": {
-            "requests/day": 1000,
-            "tokens/minute": 12000
           },
           "intelligence_score": null
         },
