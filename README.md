@@ -242,11 +242,11 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - dots-studio/dots-3-note-preview:free
 
+- liquid/lfm-2.5-2.6b:free
+
 - nvidia/nemotron-3.5-lightning:free
 
 - tencent/hy3:free
-
-- z-ai/glm-5.2:free
 
 
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T01:24:31.825559Z",
+  "generated_at": "2026-08-19T01:26:43.167823Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -256,6 +256,11 @@
           "intelligence_score": null
         },
         {
+          "id": "liquid/lfm-2.5-2.6b:free",
+          "name": "liquid/lfm-2.5-2.6b:free",
+          "intelligence_score": null
+        },
+        {
           "id": "nvidia/nemotron-3.5-lightning:free",
           "name": "nvidia/nemotron-3.5-lightning:free",
           "intelligence_score": null
@@ -263,11 +268,6 @@
         {
           "id": "tencent/hy3:free",
           "name": "tencent/hy3:free",
-          "intelligence_score": null
-        },
-        {
-          "id": "z-ai/glm-5.2:free",
-          "name": "z-ai/glm-5.2:free",
           "intelligence_score": null
         }
       ]
