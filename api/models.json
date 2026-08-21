@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T01:25:19.452388Z",
+  "generated_at": "2026-08-21T01:35:56.646890Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -187,6 +187,11 @@
         {
           "id": "MiniMax-M2.7",
           "name": "MiniMax M2.7",
+          "intelligence_score": null
+        },
+        {
+          "id": "MiniMax-M3",
+          "name": "MiniMax-M3",
           "intelligence_score": null
         },
         {

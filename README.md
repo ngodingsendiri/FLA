@@ -507,6 +507,8 @@ _Daftar model tidak di-fetch (butuh kredensial Cloudflare)._
 
 - MiniMax M2.7
 
+- MiniMax-M3
+
 - OpenAI GPT-OSS 120B
 
 
