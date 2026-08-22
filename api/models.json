@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T01:35:56.646890Z",
+  "generated_at": "2026-08-22T01:24:59.981815Z",
   "providers": {
     "openrouter": {
       "tier": "free",
@@ -96,15 +96,6 @@
           "intelligence_score": null
         },
         {
-          "id": "openai/gpt-oss-20b:free",
-          "name": "OpenAI GPT-OSS 20B",
-          "limits": {
-            "requests/minute": 20,
-            "requests/day": 50
-          },
-          "intelligence_score": null
-        },
-        {
           "id": "poolside/laguna-s-2.1:free",
           "name": "Poolside Laguna S 2.1",
           "limits": {
@@ -143,6 +134,24 @@
         {
           "id": "nvidia/nemotron-3.5-lightning:free",
           "name": "nvidia/nemotron-3.5-lightning:free",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "thinkingmachines/inkling-small:free",
+          "name": "thinkingmachines/inkling-small:free",
+          "limits": {
+            "requests/minute": 20,
+            "requests/day": 50
+          },
+          "intelligence_score": null
+        },
+        {
+          "id": "thinkingmachines/inkling:free",
+          "name": "thinkingmachines/inkling:free",
           "limits": {
             "requests/minute": 20,
             "requests/day": 50
@@ -266,13 +275,33 @@
           "intelligence_score": null
         },
         {
+          "id": "meituan/longcat-2.0-free",
+          "name": "meituan/longcat-2.0-free",
+          "intelligence_score": null
+        },
+        {
           "id": "nvidia/nemotron-3.5-lightning:free",
           "name": "nvidia/nemotron-3.5-lightning:free",
           "intelligence_score": null
         },
         {
+          "id": "stealth/ox-alpha",
+          "name": "stealth/ox-alpha",
+          "intelligence_score": null
+        },
+        {
           "id": "tencent/hy3:free",
           "name": "tencent/hy3:free",
+          "intelligence_score": null
+        },
+        {
+          "id": "thinkingmachines/inkling-small:free",
+          "name": "thinkingmachines/inkling-small:free",
+          "intelligence_score": null
+        },
+        {
+          "id": "thinkingmachines/inkling:free",
+          "name": "thinkingmachines/inkling:free",
           "intelligence_score": null
         }
       ]

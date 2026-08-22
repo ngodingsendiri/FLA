@@ -104,8 +104,6 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - [NVIDIA Nemotron Nano 9B v2](https://openrouter.ai/nvidia/nemotron-nano-9b-v2:free)
 
-- [OpenAI GPT-OSS 20B](https://openrouter.ai/openai/gpt-oss-20b:free)
-
 - [Poolside Laguna S 2.1](https://openrouter.ai/poolside/laguna-s-2.1:free)
 
 - [Poolside Laguna XS 2.1](https://openrouter.ai/poolside/laguna-xs-2.1:free)
@@ -115,6 +113,10 @@ Ubah src/README_template.md atau skrip generator-nya.
 - [liquid/lfm-2.5-2.6b:free](https://openrouter.ai/liquid/lfm-2.5-2.6b:free)
 
 - [nvidia/nemotron-3.5-lightning:free](https://openrouter.ai/nvidia/nemotron-3.5-lightning:free)
+
+- [thinkingmachines/inkling-small:free](https://openrouter.ai/thinkingmachines/inkling-small:free)
+
+- [thinkingmachines/inkling:free](https://openrouter.ai/thinkingmachines/inkling:free)
 
 - [z-ai/glm-5.2:free](https://openrouter.ai/z-ai/glm-5.2:free)
 
@@ -244,9 +246,17 @@ Ubah src/README_template.md atau skrip generator-nya.
 
 - liquid/lfm-2.5-2.6b:free
 
+- meituan/longcat-2.0-free
+
 - nvidia/nemotron-3.5-lightning:free
 
+- stealth/ox-alpha
+
 - tencent/hy3:free
+
+- thinkingmachines/inkling-small:free
+
+- thinkingmachines/inkling:free
 
 
 
